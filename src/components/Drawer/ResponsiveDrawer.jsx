@@ -19,6 +19,10 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 
+const navRefs = [
+  'Users', 'Electives', 'Exams', 'Subjects'
+];
+
 const drawerWidth = 240;
 
 const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})(
@@ -68,7 +72,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
 
 export function ResponsiveDrawer({children}) {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -117,7 +121,7 @@ export function ResponsiveDrawer({children}) {
                 </DrawerHeader>
                 <Divider/>
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    {navRefs.map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton>
                                 <ListItemText primary={text}/>
