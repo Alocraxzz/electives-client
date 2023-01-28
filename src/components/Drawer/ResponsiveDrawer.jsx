@@ -97,7 +97,7 @@ export function ResponsiveDrawer({children}) {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Persistent drawer
+
                     </Typography>
                 </Toolbar>
             </AppBar>
