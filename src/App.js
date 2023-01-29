@@ -7,7 +7,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <ResponsiveDrawer>
-          <StudentsDataGrid />
+          Api documentation
         </ResponsiveDrawer>
       </header>
     </div>

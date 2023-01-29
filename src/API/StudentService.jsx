@@ -2,12 +2,9 @@ import axios from 'axios';
 
 export default class StudentService {
   static async getAll() {
-    try {
-      const response = await axios.get('http://localhost:5678/api/students');
-      return response.data;
-    } catch (e) {
-      console.log(e);
-    }
+    return axios.get('http://localhost:5678/api/students')
+      .then((response) => response?.data)
+      .catch((error) => console.log(error));
   }
 
   static async deleteOne(id) {

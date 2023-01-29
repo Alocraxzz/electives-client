@@ -1,17 +1,60 @@
 import {useEffect, useMemo, useState} from "react";
-import {DataGrid, GridActionsCellItem, GridToolbar} from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridRowModes,
+  GridToolbar,
+  GridToolbarColumnsButton,
+  GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton, GridToolbarQuickFilter
+} from "@mui/x-data-grid";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 import Box from "@mui/material/Box";
+import {Button} from "@mui/material";
+
+const CustomToolbar = () => {
+  const handleDeleteAll = () => {
+    console.log("delete all button handled");
+  }
+
+  const handleCreate = () => {
+    console.log("create button handled");
+  }
+
+  return (
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "10px"}}>
+        <div style={{display: "flex", flexDirection: "column"}}>
+          <GridToolbarContainer>
+            <GridToolbarQuickFilter/>
+          </GridToolbarContainer>
+          <GridToolbarContainer>
+            <GridToolbarColumnsButton/>
+            <GridToolbarFilterButton/>
+            <GridToolbarDensitySelector/>
+            <GridToolbarExport/>
+          </GridToolbarContainer>
+        </div>
+        <div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
+          <Button onClick={handleCreate}>Create new</Button>
+          <Button onClick={handleDeleteAll}>Delete all selected</Button>
+        </div>
+      </div>
+    </>
+  );
+}
 
 export const DataGridTemplate = ({service, headers}) => {
   const [dataGridHeaders, setDataGridHeaders] = useState([]);
+  const [selectionModel, setSelectionModel] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [data, setData] = useState([]);
-  const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
-    console.log(rowModesModel);
-  }, [rowModesModel]);
+    console.log(selectionModel);
+  }, [selectionModel]);
 
   const deleteData = (id) => {
     // handle modal to confirm delete
@@ -23,10 +66,21 @@ export const DataGridTemplate = ({service, headers}) => {
     console.log("update button toggled: parameter id equal = " + id);
   }
 
+  const onCellEditCommit = (cellData) => {
+    console.log(cellData);
+  }
+
   const createHeaders = (data) => {
     headers.forEach((header, index) => {
       setDataGridHeaders((prevState) =>
-        [...prevState, {field: header, headerName: header, flex: 1, editable: index}]);
+        [...prevState, {
+          field: header.field,
+          headerName: header.field,
+          type: header.type,
+          flex: 1,
+          minWidth: 120,
+          editable: index
+        }]);
     });
 
     setDataGridHeaders((prevState) =>
@@ -35,7 +89,7 @@ export const DataGridTemplate = ({service, headers}) => {
           field: 'actions',
           headerName: 'actions',
           type: 'actions',
-          maxWidth: 80,
+          minWidth: 80,
           getActions: ({id}) => [
             <GridActionsCellItem
               icon={<EditIcon/>}
@@ -55,7 +109,7 @@ export const DataGridTemplate = ({service, headers}) => {
   useEffect(() => {
     async function fetchStudents() {
       const data = await service.getAll();
-      setData(data);
+      data && setData(data);
     }
 
     createHeaders(data);
@@ -76,16 +130,15 @@ export const DataGridTemplate = ({service, headers}) => {
         checkboxSelection
         disableSelectionOnClick
         editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+        onCellEditCommit={onCellEditCommit}
+        onSelectionModelChange={(newSelectionModel) =>
+            setSelectionModel(newSelectionModel)
+        }
         components={{
-          Toolbar: GridToolbar,
+          Toolbar: CustomToolbar,
         }}
         componentsProps={{
-          toolbar: {
-            showQuickFilter: true,
-            quickFilterProps: {debounceMs: 500},
-          },
+          toolbar: {numSelected: selected?.length}
         }}
         experimentalFeatures={{newEditingApi: true}}
       />

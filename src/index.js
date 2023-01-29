@@ -2,14 +2,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {ThemeProvider, createTheme} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
-    createBrowserRouter,
-    RouterProvider,
+  createBrowserRouter,
+  RouterProvider,
 } from "react-router-dom";
 
 import {Electives} from "./pages/Electives";
@@ -19,27 +19,26 @@ import {Subjects} from "./pages/Subjects";
 import {ErrorPage} from "./error-page";
 
 const router = createBrowserRouter([
-    { path: "/", element: <App /> },
-    { path: "/electives", element: <Electives /> },
-    { path: "/exams", element: <Exams /> },
-    { path: "/students", element: <Students /> },
-    { path: "/subjects", element: <Subjects /> },
-    { path: "/*", element: <ErrorPage /> },
+  {path: "/", element: <App/>, errorElement: <ErrorPage/>},
+  {path: "/electives", element: <Electives/>, errorElement: <ErrorPage/>},
+  {path: "/exams", element: <Exams/>, errorElement: <ErrorPage/>},
+  {path: "/students", element: <Students/>, errorElement: <ErrorPage/>},
+  {path: "/subjects", element: <Subjects/>, errorElement: <ErrorPage/>},
 ]);
 
 const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
+  palette: {
+    mode: 'dark',
+  },
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <>
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <RouterProvider router={router} />
-        </ThemeProvider>
-    </>
+  <>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline/>
+      <RouterProvider router={router}/>
+    </ThemeProvider>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function
