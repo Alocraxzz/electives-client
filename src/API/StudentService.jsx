@@ -9,4 +9,12 @@ export default class StudentService {
       console.log(e);
     }
   }
+
+  static async deleteOne(id) {
+    try {
+      console.log("Student service deleteOne method handled by param id equal = " + id);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
