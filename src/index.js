@@ -16,6 +16,7 @@ import {Electives} from "./pages/Electives";
 import {Exams} from "./pages/Exams";
 import {Students} from "./pages/Students";
 import {Subjects} from "./pages/Subjects";
+import {ErrorPage} from "./error-page";
 
 const router = createBrowserRouter([
     { path: "/", element: <App /> },
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
     { path: "/exams", element: <Exams /> },
     { path: "/students", element: <Students /> },
     { path: "/subjects", element: <Subjects /> },
+    { path: "/*", element: <ErrorPage /> },
 ]);
 
 const darkTheme = createTheme({

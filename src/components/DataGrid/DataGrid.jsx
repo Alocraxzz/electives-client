@@ -7,6 +7,11 @@ import Box from "@mui/material/Box";
 export const DataGridTemplate = ({service, headers}) => {
   const [dataGridHeaders, setDataGridHeaders] = useState([]);
   const [data, setData] = useState([]);
+  const [rowModesModel, setRowModesModel] = useState({});
+
+  useEffect(() => {
+    console.log(rowModesModel);
+  }, [rowModesModel]);
 
   const deleteData = (id) => {
     // handle modal to confirm delete
@@ -21,25 +26,26 @@ export const DataGridTemplate = ({service, headers}) => {
   const createHeaders = (data) => {
     headers.forEach((header, index) => {
       setDataGridHeaders((prevState) =>
-        [...prevState, {field: header, headerName: header, flex: 1, editable: true,}]);
+        [...prevState, {field: header, headerName: header, flex: 1, editable: index}]);
     });
 
     setDataGridHeaders((prevState) =>
       [...prevState,
         {
           field: 'actions',
+          headerName: 'actions',
           type: 'actions',
           maxWidth: 80,
-          getActions: (params) => [
+          getActions: ({id}) => [
             <GridActionsCellItem
-              icon={<EditIcon />}
+              icon={<EditIcon/>}
               label="Edit"
-              onClick={() => updateData(params.id)}
+              onClick={() => updateData(id)}
             />,
             <GridActionsCellItem
               icon={<DeleteIcon/>}
               label="Delete"
-              onClick={() => deleteData(params.id)}
+              onClick={() => deleteData(id)}
             />
           ],
         }
@@ -69,7 +75,9 @@ export const DataGridTemplate = ({service, headers}) => {
         rows={columns}
         checkboxSelection
         disableSelectionOnClick
-        experimentalFeatures={{newEditingApi: true}}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
         components={{
           Toolbar: GridToolbar,
         }}
@@ -79,6 +87,7 @@ export const DataGridTemplate = ({service, headers}) => {
             quickFilterProps: {debounceMs: 500},
           },
         }}
+        experimentalFeatures={{newEditingApi: true}}
       />
     </Box>
   );
