@@ -9,7 +9,7 @@ export const apiSlice = createApi({
             query: () => '/students',
             providesTags: ['Student']
         }),
-        addStudents: builder.mutation({
+        addStudent: builder.mutation({
             query: (body) => ({
                 url: '/students',
                 method: 'post',
@@ -20,4 +20,4 @@ export const apiSlice = createApi({
     })
 })
 
-export const {useGetStudentsQuery, useAddStudentsMutation } = apiSlice;
+export const {useGetStudentsQuery, useAddStudentMutation } = apiSlice;

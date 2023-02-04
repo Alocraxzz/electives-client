@@ -1,8 +1,8 @@
-import mainSlice from "./mainSlice";
+import studentsSlice from "./studentSlice";
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 
 const rootReducer = combineReducers({
-    main: mainSlice,
+    students: studentsSlice,
 });
 
 export const store = configureStore({

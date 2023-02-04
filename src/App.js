@@ -6,7 +6,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <ResponsiveDrawer>
-                    Api documentation
+                    Api Documentation
                 </ResponsiveDrawer>
             </header>
         </div>

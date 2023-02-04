@@ -1,32 +1,34 @@
-import {useEffect, useMemo, useState} from "react";
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
     DataGrid,
-    GridActionsCellItem,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridToolbarExport,
     GridToolbarFilterButton,
-    GridToolbarQuickFilter
-} from "@mui/x-data-grid";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import Box from "@mui/material/Box";
-import {Button} from "@mui/material";
+    GridToolbarQuickFilter,
+} from '@mui/x-data-grid'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import Box from '@mui/material/Box'
+import { AlertDialog } from '../Dialog/AlertDialog/AlertDialog'
+import { DeleteAlertDialog, DeleteRecordDialog } from '../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordDialog'
+import { EditAlertDialog } from '../Dialog/AlertDialog/EditAlertDialog/EditAlertDialog'
+import { DeleteRecordsDialog } from '../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordsDialog'
 
-const CustomToolbar = ({numSelected}) => {
+const CustomToolbar = ({ formDialog, numSelected }) => {
     const handleDeleteAll = () => {
-        console.log("delete all button handled");
+        console.log('delete all button handled')
     }
 
     const handleCreate = () => {
-        console.log("create button handled");
+        console.log('create button handled')
     }
 
     return (
         <>
-            <div style={{display: "flex", justifyContent: "space-between", padding: "10px"}}>
-                <div style={{display: "flex", flexDirection: "column"}}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <GridToolbarContainer>
                         <GridToolbarQuickFilter/>
                     </GridToolbarContainer>
@@ -38,100 +40,114 @@ const CustomToolbar = ({numSelected}) => {
                     </GridToolbarContainer>
                 </div>
                 <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-end"
+                    display:        'flex',
+                    flexDirection:  'column',
+                    justifyContent: 'center',
+                    alignItems:     'flex-end',
                 }}>
                     {(numSelected > 0) ? (
-                        <Button onClick={handleDeleteAll}>Delete all selected</Button>
+                        <DeleteRecordsDialog onClick={handleDeleteAll}/>
                     ) : (
-                        <Button onClick={handleCreate}>Create new</Button>
+                        formDialog
                     )}
                 </div>
             </div>
         </>
-    );
+    )
 }
 
-export const DataGridTemplate = ({service, headers}) => {
-    const [dataGridHeaders, setDataGridHeaders] = useState([]);
-    const [selectionModel, setSelectionModel] = useState([]);
-    const [data, setData] = useState([]);
+export const DataGridTemplate = ({ service, formDialog, headers }) => {
+    const [snackbar, setSnackbar]               = useState(null)
+    const [dataGridHeaders, setDataGridHeaders] = useState([])
+    const [selectionModel, setSelectionModel]   = useState([])
+    const [data, setData]                       = useState([])
 
     useEffect(() => {
-        console.log(selectionModel);
-    }, [selectionModel]);
+        console.log(selectionModel)
+    }, [selectionModel])
+
+    const handleCloseSnackbar = () => setSnackbar(null)
 
     const deleteData = (id) => {
         // handle modal to confirm delete
 
-        service.deleteOne(id);
+        service.deleteOne(id)
     }
 
     const updateData = (id) => {
-        console.log("update button toggled: parameter id equal = " + id);
+        console.log('update button toggled: parameter id equal = ' + id)
     }
 
     const onCellEditCommit = (cellData) => {
-        console.log(cellData);
+        console.log(cellData)
     }
 
     const createHeaders = (data) => {
         headers.forEach((header, index) => {
             setDataGridHeaders((prevState) => {
                 return [...prevState, {
-                    field: header.field,
+                    field:      header.field,
                     headerName: header.label,
-                    type: header.type,
-                    flex: 1,
-                    minWidth: 120,
-                    editable: index
-                }];
-            });
-        });
+                    type:       header.type,
+                    flex:       1,
+                    minWidth:   120,
+                }]
+            })
+        })
 
         setDataGridHeaders((prevState) => {
             return [...prevState, {
-                field: 'actions',
+                field:      'actions',
                 headerName: 'actions',
-                type: 'actions',
-                minWidth: 80,
-                getActions: ({id}) => [
-                    <GridActionsCellItem
-                        icon={<EditIcon/>}
+                type:       'actions',
+                minWidth:   240,
+                getActions: ({ id }) => [
+                    <EditAlertDialog
+                        openButtonTitle={'Edit'}
+                        startIcon={<EditIcon/>}
                         label="Edit"
-                        onClick={() => updateData(id)}
-                    />,
-                    <GridActionsCellItem
-                        icon={<DeleteIcon/>}
-                        label="Delete"
                         onClick={() => deleteData(id)}
-                    />
+                    />,
+                    <DeleteRecordDialog
+                        onClick={() => deleteData(id)}
+                    />,
                 ],
-            }];
-        });
-
+            }]
+        })
     }
 
     useEffect(() => {
-        async function fetchStudents() {
-            const data = await service.getAll();
-            data && setData(data);
+        async function fetchStudents () {
+            const data = await service.getAll()
+            data && setData(data)
         }
 
-        createHeaders(data);
+        createHeaders(data)
 
-        fetchStudents().catch((error) => console.log(error));
-    }, []);
+        fetchStudents().catch((error) => console.log(error))
+    }, [])
 
     const columns = useMemo(
         () => data.filter((column) => column),
         [data],
-    );
+    )
+
+    const processRowUpdate = () => async (newRow) => {
+        console.log('processRowUpdate')
+        console.log(newRow)
+        // // Make the HTTP request to save in the backend
+        // const response = await mutateRow(newRow);
+        // setSnackbar({ children: 'User successfully saved', severity: 'success' });
+        // return response;
+    }
+
+    //
+    const handleProcessRowUpdateError = useCallback((error) => {
+        (data?.length > 0) && setSnackbar({ children: error.message, severity: 'error' })
+    }, [])
 
     return (
-        <Box sx={{height: "80vh", width: '100%'}}>
+        <Box sx={{ height: '80vh', width: '100%' }}>
             <DataGrid
                 columns={dataGridHeaders}
                 rows={columns}
@@ -139,16 +155,32 @@ export const DataGridTemplate = ({service, headers}) => {
                 disableSelectionOnClick
                 editMode="row"
                 getRowId={(row) => row._id}
-                onCellEditCommit={onCellEditCommit}
                 onSelectionModelChange={(newSelectionModel) =>
                     setSelectionModel(newSelectionModel)
                 }
-                components={{Toolbar: CustomToolbar}}
-                componentsProps={{
-                    toolbar: {numSelected: selectionModel?.length}
+                components={{
+                    Toolbar: CustomToolbar,
                 }}
-                experimentalFeatures={{newEditingApi: true}}
+                componentsProps={{
+                    toolbar: {
+                        formDialog:  formDialog,
+                        numSelected: selectionModel?.length,
+                    },
+                }}
+                experimentalFeatures={{ newEditingApi: true }}
+                onProcessRowUpdateError={handleProcessRowUpdateError}
+                processRowUpdate={processRowUpdate}
             />
+            {/*{!!snackbar && (*/}
+            {/*    <Snackbar*/}
+            {/*        open*/}
+            {/*        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}*/}
+            {/*        onClose={handleCloseSnackbar}*/}
+            {/*        autoHideDuration={6000}*/}
+            {/*    >*/}
+            {/*        <Alert {...snackbar} onClose={handleCloseSnackbar} />*/}
+            {/*    </Snackbar>*/}
+            {/*)}*/}
         </Box>
-    );
+    )
 }
