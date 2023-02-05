@@ -14,14 +14,12 @@ const headers = [
 ];
 
 export const StudentsDataGrid = ({ state }) => {
-    const { students, status } = useSelector(state => state.students);
+    const { students, status, isNeedUpdate } = useSelector(state => state.students);
     const dispatch             = useDispatch();
 
-    // useEffect(() => {
-    //     if (status === Status.idle) {
-    //         dispatch(fetchStudents());
-    //     }
-    // }, [status, dispatch])
+    useEffect(() => {
+        dispatch(fetchStudents());
+    }, [isNeedUpdate])
 
 
     useEffect(() => {
