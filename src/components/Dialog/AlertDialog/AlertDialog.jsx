@@ -26,7 +26,7 @@ export const AlertDialog = ({ openButtonTitle, startIcon, title, header, onClick
 
     return (
         <div>
-            <Button variant="outlined" startIcon={startIcon} onClick={handleClickOpen}>
+            <Button variant="outlined" size="small" startIcon={startIcon} onClick={handleClickOpen}>
                 {openButtonTitle}
             </Button>
             <Dialog
