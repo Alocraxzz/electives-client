@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import StudentService from "../../services/API/StudentService";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 export const Status = {
     idle: "idle",
     pending: "pending",
-}
+};
 
 const studentsSlice = createSlice({
     name: "students",
@@ -13,13 +12,14 @@ const studentsSlice = createSlice({
         students: [],
         student: {},
         status: "idle",
-        operationResult: {},
+        operationResult: null,
+        isUpdateRequired: false,
     },
-    tagTypes: ['Students'],
     reducers: {
         loading (state, action) {
             if (state.status === Status.idle) {
                 state.status = Status.pending;
+                state.isUpdateRequired = false;
             }
         },
         receivedMany (state, action) {
@@ -30,14 +30,15 @@ const studentsSlice = createSlice({
         },
         receivedOne (state, action) {
             if (state.status === Status.pending) {
-                state.student = action.payload
-                state.status  = Status.idle;
+                state.student  = action.payload;
+                state.status   = Status.idle;
             }
         },
         receivedOperation (state, action) {
             if (state.status === Status.pending) {
-                state.operationResult = action.payload;
-                state.status          = Status.idle;
+                state.operationResult  = action.payload;
+                state.status           = Status.idle;
+                state.isUpdateRequired = true;
             }
         },
     },
@@ -45,7 +46,7 @@ const studentsSlice = createSlice({
 
 export default studentsSlice.reducer;
 
-export const { loading, receivedMany, receivedOne, receivedOperation } = studentsSlice.actions;
+const { loading, receivedMany, receivedOne, receivedOperation } = studentsSlice.actions;
 
 export const fetchStudents = () => async (dispatch) => {
     dispatch(loading());
@@ -63,18 +64,21 @@ export const storeStudent = (student) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.store(student);
     dispatch(receivedOperation(response));
+    fetchStudents();
 };
 
 export const updateStudent = (id, student) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.update(id, student);
     dispatch(receivedOperation(response));
+    fetchStudents();
 };
 
 export const deleteOneStudent = (id) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.deleteOne(id);
     dispatch(receivedOperation(response));
+    fetchStudents();
 };
 
 
