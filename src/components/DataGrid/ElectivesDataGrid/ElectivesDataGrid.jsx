@@ -1,4 +1,4 @@
-import StudentService from "../../../API/StudentService";
+import StudentService from "../../../features/services/API/StudentService";
 import {DataGridTemplate} from "../DataGrid";
 
 export const StudentsDataGrid = () => {
