@@ -3,6 +3,7 @@ import { StudentDialog } from "../../Dialog/StudentDialog/StudentDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneStudent, fetchStudents, Status } from "../../../features/redux/rtk/studentSlice";
 import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
@@ -14,13 +15,12 @@ const headers = [
 ];
 
 export const StudentsDataGrid = ({ state }) => {
-    const { students, status, isNeedUpdate } = useSelector(state => state.students);
-    const dispatch             = useDispatch();
+    const { students, status, isUpdateRequired } = useSelector(state => state.students);
+    const dispatch                               = useDispatch();
 
     useEffect(() => {
         dispatch(fetchStudents());
-    }, [isNeedUpdate])
-
+    }, [isUpdateRequired]);
 
     useEffect(() => {
         console.log(students);
@@ -31,17 +31,22 @@ export const StudentsDataGrid = ({ state }) => {
     };
 
     return (
-        <DataGridTemplate
-            data={students}
-            deleteRecord={deleteStudent}
-            formDialog={
-                <StudentDialog
-                    studentInitialState={
-                        { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
-                    }
-                />
+        <>
+            <DataGridTemplate
+                data={students}
+                deleteRecord={deleteStudent}
+                formDialog={
+                    <StudentDialog
+                        studentInitialState={
+                            { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
+                        }
+                    />
+                }
+                headers={headers}
+            />
+            {status === Status.pending &&
+                <CircularProgress color="inherit"/>
             }
-            headers={headers}
-        />
+        </>
     );
 };
