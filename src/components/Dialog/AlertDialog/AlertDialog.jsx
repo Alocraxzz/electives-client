@@ -20,8 +20,8 @@ export const AlertDialog = ({ openButtonTitle, startIcon, title, header, onClick
     };
 
     const handleAgree = () => {
-        onClick();
         setOpen(false);
+        onClick();
     };
 
     return (

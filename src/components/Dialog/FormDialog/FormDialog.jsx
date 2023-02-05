@@ -7,9 +7,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export const FormDialog = ({ children, startIcon, openButtonTitle, title, header, maxWidth, handleFormSubmit }) => {
-    const [open, setOpen]           = useState(false);
-    const [fullWidth, setFullWidth] = useState(true);
+export const FormDialog = ({
+    children, startIcon, openButtonTitle,
+    title, header, handleFormSubmit, clearForm,
+}) => {
+    const [open, setOpen] = useState(false);
 
     const handleSubmit = async () => {
         setOpen(false);
@@ -22,6 +24,7 @@ export const FormDialog = ({ children, startIcon, openButtonTitle, title, header
 
     const handleClose = () => {
         setOpen(false);
+        clearForm();
     };
 
     return (
@@ -30,8 +33,8 @@ export const FormDialog = ({ children, startIcon, openButtonTitle, title, header
                 {openButtonTitle ?? "Open dialog"}
             </Button>
             <Dialog
-                fullWidth={fullWidth}
-                maxWidth={maxWidth ?? "sm"}
+                fullWidth={true}
+                maxWidth={"sm"}
                 open={open}
                 onClose={handleClose}
             >

@@ -56,11 +56,11 @@ const CustomToolbar = ({ formDialog, numSelected }) => {
     )
 }
 
-export const DataGridTemplate = ({ service, formDialog, headers }) => {
+export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) => {
     const [snackbar, setSnackbar]               = useState(null)
     const [dataGridHeaders, setDataGridHeaders] = useState([])
     const [selectionModel, setSelectionModel]   = useState([])
-    const [data, setData]                       = useState([])
+    // const [data, setData]                       = useState([])
 
     useEffect(() => {
         console.log(selectionModel)
@@ -69,17 +69,7 @@ export const DataGridTemplate = ({ service, formDialog, headers }) => {
     const handleCloseSnackbar = () => setSnackbar(null)
 
     const deleteData = (id) => {
-        // handle modal to confirm delete
-
-        service.deleteOne(id)
-    }
-
-    const updateData = (id) => {
-        console.log('update button toggled: parameter id equal = ' + id)
-    }
-
-    const onCellEditCommit = (cellData) => {
-        console.log(cellData)
+        deleteRecord(id);
     }
 
     const createHeaders = (data) => {
@@ -117,14 +107,7 @@ export const DataGridTemplate = ({ service, formDialog, headers }) => {
     }
 
     useEffect(() => {
-        async function fetchStudents () {
-            const data = await service.getAll()
-            data && setData(data)
-        }
-
         createHeaders(data)
-
-        fetchStudents().catch((error) => console.log(error))
     }, [])
 
     const columns = useMemo(

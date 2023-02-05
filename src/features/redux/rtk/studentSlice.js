@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import StudentService from "../../services/API/StudentService";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 export const Status = {
     idle: "idle",
@@ -10,9 +11,11 @@ const studentsSlice = createSlice({
     name: "students",
     initialState: {
         students: [],
+        student: {},
         status: "idle",
         operationResult: {},
     },
+    tagTypes: ['Students'],
     reducers: {
         loading (state, action) {
             if (state.status === Status.idle) {
@@ -27,8 +30,7 @@ const studentsSlice = createSlice({
         },
         receivedOne (state, action) {
             if (state.status === Status.pending) {
-                state.students = [];
-                state.students.push(action.payload);
+                state.student = action.payload
                 state.status  = Status.idle;
             }
         },

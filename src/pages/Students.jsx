@@ -6,17 +6,11 @@ import { fetchStudents } from "../features/redux/rtk/studentSlice";
 import { StudentsDataGrid } from "../components/DataGrid/StudentsDataGrid/StudentsDataGrid";
 
 export const Students = () => {
-    const { students, status } = useSelector(state => state.students);
-    const dispatch             = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchStudents());
-    }, [students]);
 
     return (
         <div className={classes.mainContent}>
             <ResponsiveDrawer>
-                <StudentsDataGrid/>
+                <StudentsDataGrid />
             </ResponsiveDrawer>
         </div>
     );

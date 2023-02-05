@@ -3,13 +3,16 @@ import * as React from "react";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
-import { storeStudent } from "../../../features/redux/rtk/studentSlice";
+import { fetchStudents, storeStudent } from "../../../features/redux/rtk/studentSlice";
 import { useDispatch } from "react-redux";
 
-export const StudentDialog = () => {
-    const studentInitialState   = { firstName: "", secondName: "", thirdName: "", phone: "", address: "" };
+export const StudentDialog = ({ studentInitialState }) => {
     const dispatch              = useDispatch();
     const [student, setStudent] = useState(studentInitialState);
+
+    const clearForm = () => {
+        setStudent(studentInitialState);
+    }
 
     const handleFormSubmit = () => {
         dispatch(storeStudent(student));
@@ -22,6 +25,7 @@ export const StudentDialog = () => {
             title={"Add student"}
             startIcon={<AddIcon/>}
             handleFormSubmit={handleFormSubmit}
+            clearForm={clearForm}
         >
             <TextField
                 value={student.firstName}
