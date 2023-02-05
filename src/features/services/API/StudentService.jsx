@@ -31,7 +31,7 @@ export default class StudentService {
 
     static async deleteOne (id) {
         const operation = await axios.delete(`http://localhost:5678/api/students/${id}`)
-            .catch((error) => console.log(`StudentService.getAll throw error: ${error}`));
+            .catch((error) => console.log(`StudentService.deleteOne throw error: ${error}`));
 
         return operation?.data;
     }
