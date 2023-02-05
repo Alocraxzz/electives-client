@@ -1,41 +1,78 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import StudentService from "../../../API/StudentService";
+import { createSlice } from "@reduxjs/toolkit";
+import StudentService from "../../services/API/StudentService";
 
-export const fetchStudents = createAsyncThunk(
-    "students/fetchStudents",
-    async function () {
-        return await StudentService.getAll();
-    },
-);
+export const Status = {
+    idle: "idle",
+    pending: "pending",
+}
 
 const studentsSlice = createSlice({
     name: "students",
     initialState: {
         students: [],
         status: "idle",
+        operationResult: {},
     },
     reducers: {
-        async getStudents (state) {
-            state.students = [];
+        loading (state, action) {
+            if (state.status === Status.idle) {
+                state.status = Status.pending;
+            }
         },
-        addStudent (state, action) {
-            console.log("add student from reducer: action.payload = ");
-            console.log(action.payload);
-            state.students.push(action.payload);
+        receivedMany (state, action) {
+            if (state.status === Status.pending) {
+                state.students = action.payload;
+                state.status   = Status.idle;
+            }
+        },
+        receivedOne (state, action) {
+            if (state.status === Status.pending) {
+                state.students = [];
+                state.students.push(action.payload);
+                state.status  = Status.idle;
+            }
+        },
+        receivedOperation (state, action) {
+            if (state.status === Status.pending) {
+                state.operationResult = action.payload;
+                state.status          = Status.idle;
+            }
         },
     },
-    extraReducers: (builder) => [
-        builder.addCase(fetchStudents.pending, (state) => {
-            state.status = "loading";
-        }),
-        builder.addCase(fetchStudents.fulfilled, (state, action) => {
-            state.students = action.payload;
-        }),
-        builder.addCase(fetchStudents.rejected, (state) => {
-            state.status = "rejected";
-        }),
-    ],
 });
 
 export default studentsSlice.reducer;
-export const { getStudents, addStudent } = studentsSlice.actions;
+
+export const { loading, receivedMany, receivedOne, receivedOperation } = studentsSlice.actions;
+
+export const fetchStudents = () => async (dispatch) => {
+    dispatch(loading());
+    const response = await StudentService.getAll();
+    dispatch(receivedMany(response));
+};
+
+export const fetchOneStudent = (id) => async (dispatch) => {
+    dispatch(loading());
+    const response = await StudentService.getOne(id);
+    dispatch(receivedOne(response));
+};
+
+export const storeStudent = (student) => async (dispatch) => {
+    dispatch(loading());
+    const response = await StudentService.store(student);
+    dispatch(receivedOperation(response));
+};
+
+export const updateStudent = (id, student) => async (dispatch) => {
+    dispatch(loading());
+    const response = await StudentService.update(id, student);
+    dispatch(receivedOperation(response));
+};
+
+export const deleteOneStudent = (id) => async (dispatch) => {
+    dispatch(loading());
+    const response = await StudentService.deleteOne(id);
+    dispatch(receivedOperation(response));
+};
+
+
