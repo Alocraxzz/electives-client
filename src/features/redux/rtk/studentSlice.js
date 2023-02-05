@@ -64,21 +64,21 @@ export const storeStudent = (student) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.store(student);
     dispatch(receivedOperation(response));
-    fetchStudents();
+    // fetchStudents();
 };
 
 export const updateStudent = (id, student) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.update(id, student);
     dispatch(receivedOperation(response));
-    fetchStudents();
+    // fetchStudents();
 };
 
 export const deleteOneStudent = (id) => async (dispatch) => {
     dispatch(loading());
     const response = await StudentService.deleteOne(id);
     dispatch(receivedOperation(response));
-    fetchStudents();
+    // fetchStudents();
 };
 
 
