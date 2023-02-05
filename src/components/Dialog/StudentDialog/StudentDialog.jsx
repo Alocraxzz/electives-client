@@ -1,71 +1,73 @@
-import {FormDialog} from "../FormDialog/FormDialog";
+import { FormDialog } from "../FormDialog/FormDialog";
 import * as React from "react";
-import {useEffect, useState} from "react";
-import {addStudent} from "../../../features/redux/rtk/studentSlice";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
+import { storeStudent } from "../../../features/redux/rtk/studentSlice";
+import { useDispatch } from "react-redux";
 
 export const StudentDialog = () => {
-    const [student, setStudent] = useState({
-        firstName: '', secondName: '', thirdName: '', phone: '', address: '',
-    });
+    const studentInitialState   = { firstName: "", secondName: "", thirdName: "", phone: "", address: "" };
+    const dispatch              = useDispatch();
+    const [student, setStudent] = useState(studentInitialState);
 
-    const handleSubmit = async (student) => {
-        // rtk query handle
-    }
-
-    const CustomTextField = ({value, onChange, label, type}) => {
-        return (
-            <TextField
-                value={value}
-                onChange={onChange}
-                autoFocus
-                margin="dense"
-                label={label}
-                type={type}
-                variant="outlined"
-                fullWidth
-            />
-        );
-    }
+    const handleFormSubmit = () => {
+        dispatch(storeStudent(student));
+        setStudent(studentInitialState);
+    };
 
     return (
         <FormDialog
-            dialogOpenButtonTitle={'Add record'}
-            title={'Add student'}
+            openButtonTitle={"Add record"}
+            title={"Add student"}
             startIcon={<AddIcon/>}
-            handleSubmit={handleSubmit}
+            handleFormSubmit={handleFormSubmit}
         >
-            <CustomTextField
+            <TextField
                 value={student.firstName}
-                onChange={event => setStudent({...student, firstName: event.target.value})}
+                onChange={event => setStudent({ ...student, firstName: event.target.value })}
+                margin="dense"
                 label="First Name"
                 type="text"
+                variant="outlined"
+                fullWidth
             />
-            <CustomTextField
-                value={student.firstName}
-                onChange={event => setStudent({...student, firstName: event.target.value})}
-                label="Second name"
+            <TextField
+                value={student.secondName}
+                onChange={event => setStudent({ ...student, secondName: event.target.value })}
+                margin="dense"
+                label="Second Name"
                 type="text"
+                variant="outlined"
+                fullWidth
             />
-            <CustomTextField
-                value={student.firstName}
-                onChange={event => setStudent({...student, firstName: event.target.value})}
+            <TextField
+                value={student.thirdName}
+                onChange={event => setStudent({ ...student, thirdName: event.target.value })}
+                margin="dense"
                 label="Third Name"
                 type="text"
+                variant="outlined"
+                fullWidth
             />
-            <CustomTextField
-                value={student.firstName}
-                onChange={event => setStudent({...student, firstName: event.target.value})}
+            <TextField
+                value={student.phone}
+                onChange={event => setStudent({ ...student, phone: event.target.value })}
+                margin="dense"
                 label="Phone"
                 type="text"
+                variant="outlined"
+                fullWidth
             />
-            <CustomTextField
-                value={student.firstName}
-                onChange={event => setStudent({...student, firstName: event.target.value})}
+            <TextField
+                value={student.address}
+                onChange={event => setStudent({ ...student, address: event.target.value })}
+                margin="dense"
                 label="Address"
                 type="text"
+                variant="outlined"
+                fullWidth
             />
         </FormDialog>
     );
-}
+};
