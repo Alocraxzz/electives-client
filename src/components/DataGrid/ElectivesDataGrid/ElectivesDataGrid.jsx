@@ -3,7 +3,7 @@ import { ElectiveDialog } from "../../Dialog/ElectiveDialog/ElectiveDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneElective, fetchElectives, Status } from "../../../features/redux/rtk/electiveSlice";
 import { useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
@@ -45,7 +45,7 @@ export const ElectivesDataGrid = () => {
                 headers={headers}
             />
             {status === Status.pending &&
-                <CircularProgress color="inherit"/>
+                <LinearProgress color="inherit"/>
             }
         </>
     );

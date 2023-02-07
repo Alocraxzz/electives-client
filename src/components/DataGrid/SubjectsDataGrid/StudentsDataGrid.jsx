@@ -3,7 +3,7 @@ import { StudentDialog } from "../../Dialog/StudentDialog/StudentDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneStudent, fetchStudents, Status } from "../../../features/redux/rtk/studentSlice";
 import { useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
@@ -45,7 +45,7 @@ export const StudentsDataGrid = () => {
                 headers={headers}
             />
             {status === Status.pending &&
-                <CircularProgress color="inherit"/>
+                <LinearProgress color="inherit"/>
             }
         </>
     );

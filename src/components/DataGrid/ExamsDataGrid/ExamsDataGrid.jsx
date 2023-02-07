@@ -3,7 +3,7 @@ import { StudentDialog } from "../../Dialog/StudentDialog/StudentDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneStudent, fetchStudents, Status } from "../../../features/redux/rtk/studentSlice";
 import { useEffect } from "react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
@@ -15,16 +15,12 @@ const headers = [
 ];
 
 export const ExamsDataGrid = () => {
-    const { students, status, isUpdateRequired } = useSelector(state => state.students);
+    const { exams, status, isUpdateRequired } = useSelector(state => state.exams);
     const dispatch                               = useDispatch();
 
     useEffect(() => {
         dispatch(fetchStudents());
     }, [isUpdateRequired]);
-
-    useEffect(() => {
-        console.log(students);
-    }, [students]);
 
     const deleteStudent = (id) => {
         dispatch(deleteOneStudent(id));
@@ -33,7 +29,7 @@ export const ExamsDataGrid = () => {
     return (
         <>
             <DataGridTemplate
-                data={students}
+                data={exams}
                 deleteRecord={deleteStudent}
                 formDialog={
                     <StudentDialog
@@ -45,7 +41,7 @@ export const ExamsDataGrid = () => {
                 headers={headers}
             />
             {status === Status.pending &&
-                <CircularProgress color="inherit"/>
+                <LinearProgress color="inherit"/>
             }
         </>
     );

@@ -12,12 +12,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import { DeleteRecordDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordDialog";
 import { DeleteRecordsDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordsDialog";
-import { useSelector } from "react-redux";
 import { Alert, Snackbar } from "@mui/material";
 
-const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected }) => {
+const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected, handleSetSnackBar }) => {
     const handleDeleteAll = () => {
         selectionModel.forEach((elem) => deleteRecord(elem));
+        handleSetSnackBar("Successfully deleted");
     };
 
     return (
@@ -56,11 +56,8 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
     const [selectionModel, setSelectionModel]   = useState([]);
     const [snackbar, setSnackbar]               = useState("");
 
-    // useEffect(() => {
-    //     console.log(selectionModel);
-    // }, [selectionModel]);
-
     const handleCloseSnackbar = () => setSnackbar(null);
+    const handleSetSnackBar   = (message) => setSnackbar(message);
 
     const createHeaders = () => {
         headers.forEach((header, index) => {
@@ -126,6 +123,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                         deleteRecord: deleteRecord,
                         selectionModel: selectionModel,
                         numSelected: selectionModel?.length,
+                        handleSetSnackBar: handleSetSnackBar,
                     },
                 }}
                 experimentalFeatures={{ newEditingApi: true }}
