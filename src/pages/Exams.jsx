@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import classes from "./styles/PagesStyle.module.css";
-import {ResponsiveDrawer} from "../components/Drawer/ResponsiveDrawer";
+import { ResponsiveDrawer } from "../components/Drawer/ResponsiveDrawer";
 
 export const Exams = () => {
-  return (
-    <div className={classes.mainContent}>
-      <ResponsiveDrawer>
-        Exams Grid
-      </ResponsiveDrawer>
-    </div>
-  )
-}
+    return (
+        <div className={classes.mainContent}>
+            <ResponsiveDrawer>
+                Exams Grid
+            </ResponsiveDrawer>
+        </div>
+    );
+};

@@ -1,4 +1,4 @@
-import { cloneElement, useCallback, useEffect, useState } from "react";
+import { cloneElement, useEffect, useState } from "react";
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -15,9 +15,9 @@ import { DeleteRecordsDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/Del
 import { useSelector } from "react-redux";
 import { Alert, Snackbar } from "@mui/material";
 
-const CustomToolbar = ({ formDialog, numSelected }) => {
+const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected }) => {
     const handleDeleteAll = () => {
-        console.log("delete all button handled");
+        selectionModel.forEach((elem) => deleteRecord(elem));
     };
 
     return (
@@ -52,15 +52,13 @@ const CustomToolbar = ({ formDialog, numSelected }) => {
 };
 
 export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) => {
-    const { isUpdateRequired } = useSelector(state => state.students);
-
-    const [snackbar, setSnackbar]               = useState("");
     const [dataGridHeaders, setDataGridHeaders] = useState([]);
     const [selectionModel, setSelectionModel]   = useState([]);
+    const [snackbar, setSnackbar]               = useState("");
 
-    useEffect(() => {
-        console.log(selectionModel);
-    }, [selectionModel]);
+    // useEffect(() => {
+    //     console.log(selectionModel);
+    // }, [selectionModel]);
 
     const handleCloseSnackbar = () => setSnackbar(null);
 
@@ -125,6 +123,8 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                 componentsProps={{
                     toolbar: {
                         formDialog: formDialog,
+                        deleteRecord: deleteRecord,
+                        selectionModel: selectionModel,
                         numSelected: selectionModel?.length,
                     },
                 }}
@@ -133,7 +133,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
             {!!snackbar && (
                 <Snackbar
                     open
-                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     onClose={handleCloseSnackbar}
                     autoHideDuration={1500}
                 >

@@ -22,10 +22,6 @@ export const StudentsDataGrid = () => {
         dispatch(fetchStudents());
     }, [isUpdateRequired]);
 
-    useEffect(() => {
-        console.log(students);
-    }, [students]);
-
     const handleDeleteOne = (id) => {
         dispatch(deleteOneStudent(id));
     };

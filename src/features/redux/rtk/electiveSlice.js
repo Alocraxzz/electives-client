@@ -50,31 +50,31 @@ const { loading, receivedMany, receivedOne, receivedOperation } = electiveSlice.
 
 export const fetchElectives = () => async (dispatch) => {
     dispatch(loading());
-    const response = await ElectivesService.getAll();
+    const response = await ElectiveService.getAll();
     dispatch(receivedMany(response));
 };
 
 export const fetchOneElective = (id) => async (dispatch) => {
     dispatch(loading());
-    const response = await ElectivesService.getOne(id);
+    const response = await ElectiveService.getOne(id);
     dispatch(receivedOne(response));
 };
 
 export const storeElective = (elective) => async (dispatch) => {
     dispatch(loading());
-    const response = await ElectivesService.store(elective);
+    const response = await ElectiveService.store(elective);
     dispatch(receivedOperation(response));
 };
 
 export const updateElective = (id, elective) => async (dispatch) => {
     dispatch(loading());
-    const response = await ElectivesService.update(id, elective);
+    const response = await ElectiveService.update(id, elective);
     dispatch(receivedOperation(response));
 };
 
 export const deleteOneElective = (id) => async (dispatch) => {
     dispatch(loading());
-    const response = await ElectivesService.deleteOne(id);
+    const response = await ElectiveService.deleteOne(id);
     dispatch(receivedOperation(response));
 };
 

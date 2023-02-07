@@ -1,16 +1,52 @@
-import StudentService from "../../../features/services/API/StudentService";
-import {DataGridTemplate} from "../DataGrid";
+import { DataGridTemplate } from "../DataGrid";
+import { ElectiveDialog } from "../../Dialog/ElectiveDialog/ElectiveDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteOneElective, fetchElectives, Status } from "../../../features/redux/rtk/electiveSlice";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
-export const StudentsDataGrid = () => {
-  const headers = [
-    {type: "string", field: "_id", label: "id"},
-    {type: "string", field: "firstName", label: "firstName"},
-    {type: "string", field: "secondName", label: "secondName"},
-    {type: "string", field: "thirdName", label: "thirdName"},
-    {type: "string", field: "phone", label: "phone"},
-  ];
+const headers = [
+    { type: "string", field: "_id", label: "ID" },
+    { type: "string", field: "firstName", label: "First name" },
+    { type: "string", field: "secondName", label: "Second name" },
+    { type: "string", field: "thirdName", label: "Third name" },
+    { type: "string", field: "phone", label: "Phone" },
+    { type: "string", field: "address", label: "Address" },
+];
 
-  return (
-    <DataGridTemplate service={StudentService} headers={headers}/>
-  );
-}
+export const ElectivesDataGrid = () => {
+    const { electives, status, isUpdateRequired } = useSelector(state => state.electives);
+    const dispatch                                = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchElectives());
+    }, [isUpdateRequired]);
+
+    useEffect(() => {
+        console.log(electives);
+    }, [electives]);
+
+    const deleteElective = (id) => {
+        dispatch(deleteOneElective(id));
+    };
+
+    return (
+        <>
+            <DataGridTemplate
+                data={electives}
+                deleteRecord={deleteElective}
+                formDialog={
+                    <ElectiveDialog
+                        initialState={
+                            { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
+                        }
+                    />
+                }
+                headers={headers}
+            />
+            {status === Status.pending &&
+                <CircularProgress color="inherit"/>
+            }
+        </>
+    );
+};
