@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import { DeleteRecordDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordDialog";
 import { DeleteRecordsDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordsDialog";
 import { useSelector } from "react-redux";
+import { Alert, Snackbar } from "@mui/material";
 
 const CustomToolbar = ({ formDialog, numSelected }) => {
     const handleDeleteAll = () => {
@@ -50,10 +51,10 @@ const CustomToolbar = ({ formDialog, numSelected }) => {
     );
 };
 
-export const DataGridTemplate = ({ data, handleDeleteOne, formDialog, headers }) => {
+export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) => {
     const { isUpdateRequired } = useSelector(state => state.students);
 
-    const [snackbar, setSnackbar]               = useState(null);
+    const [snackbar, setSnackbar]               = useState("");
     const [dataGridHeaders, setDataGridHeaders] = useState([]);
     const [selectionModel, setSelectionModel]   = useState([]);
     // const [data, setData]                       = useState([])
@@ -63,10 +64,6 @@ export const DataGridTemplate = ({ data, handleDeleteOne, formDialog, headers })
     }, [selectionModel]);
 
     const handleCloseSnackbar = () => setSnackbar(null);
-
-    const deleteRecord = (id) => {
-        handleDeleteOne(id);
-    };
 
     const createHeaders = (data) => {
         headers.forEach((header, index) => {
@@ -95,7 +92,10 @@ export const DataGridTemplate = ({ data, handleDeleteOne, formDialog, headers })
                     return [
                         clonedFormDialog,
                         <DeleteRecordDialog
-                            onClick={() => deleteRecord(id)}
+                            onClick={() => {
+                                deleteRecord(id);
+                                setSnackbar("Successfully deleted");
+                            }}
                         />,
                     ];
                 },
@@ -147,16 +147,18 @@ export const DataGridTemplate = ({ data, handleDeleteOne, formDialog, headers })
                 onProcessRowUpdateError={handleProcessRowUpdateError}
                 processRowUpdate={processRowUpdate}
             />
-            {/*{!!snackbar && (*/}
-            {/*    <Snackbar*/}
-            {/*        open*/}
-            {/*        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}*/}
-            {/*        onClose={handleCloseSnackbar}*/}
-            {/*        autoHideDuration={6000}*/}
-            {/*    >*/}
-            {/*        <Alert {...snackbar} onClose={handleCloseSnackbar} />*/}
-            {/*    </Snackbar>*/}
-            {/*)}*/}
+            {!!snackbar && (
+                <Snackbar
+                    open
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    onClose={handleCloseSnackbar}
+                    autoHideDuration={1500}
+                >
+                    <Alert onClose={handleCloseSnackbar}>
+                        {snackbar}
+                    </Alert>
+                </Snackbar>
+            )}
         </Box>
     );
 };
