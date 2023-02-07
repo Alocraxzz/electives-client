@@ -6,27 +6,26 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeStudent, updateStudent } from "../../../features/redux/rtk/studentSlice";
 
-export const StudentDialog = ({ studentInitialState, openButtonTitle, title, startIcon, id }) => {
-    const { students } = useSelector(state => state.students);
-    const [student, setStudent] = useState(studentInitialState);
+export const StudentDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
+    const { students }          = useSelector(state => state.students);
+    const [student, setStudent] = useState(initialState ?? { firstName: "" });
     const dispatch              = useDispatch();
 
-
     const clearForm = () => {
-        setStudent(studentInitialState);
+        !id && setStudent(initialState);
     };
 
     useEffect(() => {
-        const student = students.find((elem) => elem._id = id);
-
-        debugger;
+        const student = students.find((elem) => elem._id === id);
 
         setStudent(student);
     }, [id]);
 
     const handleFormSubmit = () => {
-        id ? dispatch(updateStudent(id, student)) : dispatch(storeStudent(student));
-        setStudent(studentInitialState);
+        id ? dispatch(updateStudent(id, student))
+            : dispatch(storeStudent(student));
+
+        !id && setStudent(initialState);
     };
 
     return (
@@ -38,7 +37,7 @@ export const StudentDialog = ({ studentInitialState, openButtonTitle, title, sta
             clearForm={clearForm}
         >
             <TextField
-                value={student.firstName}
+                value={student?.firstName ?? ""}
                 onChange={event => setStudent({ ...student, firstName: event.target.value })}
                 margin="dense"
                 label="First Name"
@@ -47,7 +46,7 @@ export const StudentDialog = ({ studentInitialState, openButtonTitle, title, sta
                 fullWidth
             />
             <TextField
-                value={student.secondName}
+                value={student?.secondName ?? ""}
                 onChange={event => setStudent({ ...student, secondName: event.target.value })}
                 margin="dense"
                 label="Second Name"
@@ -56,7 +55,7 @@ export const StudentDialog = ({ studentInitialState, openButtonTitle, title, sta
                 fullWidth
             />
             <TextField
-                value={student.thirdName}
+                value={student?.thirdName ?? ""}
                 onChange={event => setStudent({ ...student, thirdName: event.target.value })}
                 margin="dense"
                 label="Third Name"
@@ -65,7 +64,7 @@ export const StudentDialog = ({ studentInitialState, openButtonTitle, title, sta
                 fullWidth
             />
             <TextField
-                value={student.phone}
+                value={student?.phone ?? ""}
                 onChange={event => setStudent({ ...student, phone: event.target.value })}
                 margin="dense"
                 label="Phone"
@@ -74,7 +73,7 @@ export const StudentDialog = ({ studentInitialState, openButtonTitle, title, sta
                 fullWidth
             />
             <TextField
-                value={student.address}
+                value={student?.address ?? ""}
                 onChange={event => setStudent({ ...student, address: event.target.value })}
                 margin="dense"
                 label="Address"

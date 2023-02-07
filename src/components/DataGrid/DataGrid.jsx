@@ -11,18 +11,12 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import { DeleteRecordDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordDialog";
-import { EditAlertDialog } from "../Dialog/AlertDialog/EditAlertDialog/EditAlertDialog";
 import { DeleteRecordsDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordsDialog";
 import { useSelector } from "react-redux";
-import { LinearProgress } from "@mui/material";
 
 const CustomToolbar = ({ formDialog, numSelected }) => {
     const handleDeleteAll = () => {
         console.log("delete all button handled");
-    };
-
-    const handleCreate = () => {
-        console.log("create button handled");
     };
 
     return (
@@ -95,7 +89,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                 minWidth: 240,
                 getActions: ({ id }) => {
                     const clonedFormDialog = cloneElement(formDialog, {
-                        id: id
+                        openButtonTitle: "Edit", title: "Edit record", startIcon: <EditIcon/>, id: id,
                     });
 
                     return [
@@ -104,7 +98,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                             onClick={() => deleteData(id)}
                         />,
                     ];
-                }
+                },
             }];
         });
     };

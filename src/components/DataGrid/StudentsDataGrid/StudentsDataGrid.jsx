@@ -37,7 +37,7 @@ export const StudentsDataGrid = () => {
                 deleteRecord={deleteStudent}
                 formDialog={
                     <StudentDialog
-                        studentInitialState={
+                        initialState={
                             { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
                         }
                     />
