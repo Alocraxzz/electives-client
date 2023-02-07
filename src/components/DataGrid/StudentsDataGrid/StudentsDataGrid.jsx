@@ -26,7 +26,7 @@ export const StudentsDataGrid = () => {
         console.log(students);
     }, [students]);
 
-    const deleteStudent = (id) => {
+    const handleDeleteOne = (id) => {
         dispatch(deleteOneStudent(id));
     };
 
@@ -34,7 +34,7 @@ export const StudentsDataGrid = () => {
         <>
             <DataGridTemplate
                 data={students}
-                deleteRecord={deleteStudent}
+                deleteRecord={handleDeleteOne}
                 formDialog={
                     <StudentDialog
                         initialState={

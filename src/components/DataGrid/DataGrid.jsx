@@ -50,7 +50,7 @@ const CustomToolbar = ({ formDialog, numSelected }) => {
     );
 };
 
-export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) => {
+export const DataGridTemplate = ({ data, handleDeleteOne, formDialog, headers }) => {
     const { isUpdateRequired } = useSelector(state => state.students);
 
     const [snackbar, setSnackbar]               = useState(null);
@@ -64,8 +64,8 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
 
     const handleCloseSnackbar = () => setSnackbar(null);
 
-    const deleteData = (id) => {
-        deleteRecord(id);
+    const deleteRecord = (id) => {
+        handleDeleteOne(id);
     };
 
     const createHeaders = (data) => {
@@ -95,7 +95,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                     return [
                         clonedFormDialog,
                         <DeleteRecordDialog
-                            onClick={() => deleteData(id)}
+                            onClick={() => deleteRecord(id)}
                         />,
                     ];
                 },
