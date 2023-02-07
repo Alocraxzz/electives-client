@@ -57,7 +57,6 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
     const [snackbar, setSnackbar]               = useState("");
     const [dataGridHeaders, setDataGridHeaders] = useState([]);
     const [selectionModel, setSelectionModel]   = useState([]);
-    // const [data, setData]                       = useState([])
 
     useEffect(() => {
         console.log(selectionModel);
@@ -65,7 +64,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
 
     const handleCloseSnackbar = () => setSnackbar(null);
 
-    const createHeaders = (data) => {
+    const createHeaders = () => {
         headers.forEach((header, index) => {
             setDataGridHeaders((prevState) => {
                 return [...prevState, {
@@ -107,20 +106,6 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
         createHeaders(data);
     }, []);
 
-    const processRowUpdate = () => async (newRow) => {
-        console.log("processRowUpdate");
-        console.log(newRow);
-        // // Make the HTTP request to save in the backend
-        // const response = await mutateRow(newRow);
-        // setSnackbar({ children: 'User successfully saved', severity: 'success' });
-        // return response;
-    };
-
-    //
-    const handleProcessRowUpdateError = useCallback((error) => {
-        (data?.length > 0) && setSnackbar({ children: error.message, severity: "error" });
-    }, []);
-
     return (
         <Box sx={{ height: "80vh", width: "100%" }}>
 
@@ -144,8 +129,6 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                     },
                 }}
                 experimentalFeatures={{ newEditingApi: true }}
-                onProcessRowUpdateError={handleProcessRowUpdateError}
-                processRowUpdate={processRowUpdate}
             />
             {!!snackbar && (
                 <Snackbar
