@@ -29,7 +29,7 @@ export const FormDialog = ({
 
     return (
         <div>
-            <Button variant="outlined" startIcon={startIcon} onClick={handleClickOpen}>
+            <Button variant="outlined" size="small" startIcon={startIcon} onClick={handleClickOpen}>
                 {openButtonTitle ?? "Open dialog"}
             </Button>
             <Dialog

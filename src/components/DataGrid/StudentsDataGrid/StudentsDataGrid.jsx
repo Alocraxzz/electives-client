@@ -14,7 +14,7 @@ const headers = [
     { type: "string", field: "address", label: "Address" },
 ];
 
-export const StudentsDataGrid = ({ state }) => {
+export const StudentsDataGrid = () => {
     const { students, status, isUpdateRequired } = useSelector(state => state.students);
     const dispatch                               = useDispatch();
 

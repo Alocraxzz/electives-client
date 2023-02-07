@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { cloneElement, useCallback, useEffect, useState } from "react";
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -93,17 +93,18 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                 headerName: "actions",
                 type: "actions",
                 minWidth: 240,
-                getActions: ({ id }) => [
-                    <EditAlertDialog
-                        openButtonTitle={"Edit"}
-                        startIcon={<EditIcon/>}
-                        label="Edit"
-                        onClick={() => deleteData(id)}
-                    />,
-                    <DeleteRecordDialog
-                        onClick={() => deleteData(id)}
-                    />,
-                ],
+                getActions: ({ id }) => {
+                    const clonedFormDialog = cloneElement(formDialog, {
+                        id: id
+                    });
+
+                    return [
+                        clonedFormDialog,
+                        <DeleteRecordDialog
+                            onClick={() => deleteData(id)}
+                        />,
+                    ];
+                }
             }];
         });
     };

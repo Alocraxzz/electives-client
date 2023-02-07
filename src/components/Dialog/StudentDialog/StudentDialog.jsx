@@ -1,29 +1,39 @@
 import { FormDialog } from "../FormDialog/FormDialog";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
-import { fetchStudents, storeStudent } from "../../../features/redux/rtk/studentSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { storeStudent, updateStudent } from "../../../features/redux/rtk/studentSlice";
 
-export const StudentDialog = ({ studentInitialState }) => {
-    const dispatch              = useDispatch();
+export const StudentDialog = ({ studentInitialState, openButtonTitle, title, startIcon, id }) => {
+    const { students } = useSelector(state => state.students);
     const [student, setStudent] = useState(studentInitialState);
+    const dispatch              = useDispatch();
+
 
     const clearForm = () => {
         setStudent(studentInitialState);
-    }
+    };
+
+    useEffect(() => {
+        const student = students.find((elem) => elem._id = id);
+
+        debugger;
+
+        setStudent(student);
+    }, [id]);
 
     const handleFormSubmit = () => {
-        dispatch(storeStudent(student));
+        id ? dispatch(updateStudent(id, student)) : dispatch(storeStudent(student));
         setStudent(studentInitialState);
     };
 
     return (
         <FormDialog
-            openButtonTitle={"Add record"}
-            title={"Add student"}
-            startIcon={<AddIcon/>}
+            openButtonTitle={openButtonTitle ?? "Add record"}
+            title={title ?? "Add student"}
+            startIcon={startIcon ?? <AddIcon/>}
             handleFormSubmit={handleFormSubmit}
             clearForm={clearForm}
         >
