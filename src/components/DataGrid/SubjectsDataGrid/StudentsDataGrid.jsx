@@ -1,5 +1,5 @@
 import { DataGridTemplate } from "../DataGrid";
-import { StudentDialog } from "../../Dialog/StudentDialog/StudentDialog";
+import { StudentDialog } from "../../Dialog/FormDialog/StudentDialog/StudentDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneStudent, fetchStudents, Status } from "../../../features/redux/rtk/studentSlice";
 import { useEffect } from "react";

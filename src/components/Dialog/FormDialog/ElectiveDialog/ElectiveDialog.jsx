@@ -1,12 +1,12 @@
-import { FormDialog } from "../FormDialog/FormDialog";
+import { FormDialog } from "../FormDialog";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { storeStudent, updateStudent } from "../../../features/redux/rtk/studentSlice";
+import { storeStudent, updateStudent } from "../../../../features/redux/rtk/studentSlice";
 
-export const StudentDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
+export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
     const { students }          = useSelector(state => state.students);
     const [student, setStudent] = useState(initialState ?? { firstName: "" });
     const dispatch              = useDispatch();

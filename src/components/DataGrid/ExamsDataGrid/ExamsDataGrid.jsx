@@ -1,40 +1,42 @@
 import { DataGridTemplate } from "../DataGrid";
-import { StudentDialog } from "../../Dialog/StudentDialog/StudentDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteOneStudent, fetchStudents, Status } from "../../../features/redux/rtk/studentSlice";
+import { deleteOneExam, fetchExams, Status } from "../../../features/redux/rtk/examSlice";
 import { useEffect } from "react";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
+import { ExamDialog } from "../../Dialog/FormDialog/ExamDialog/ExamsDialog";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
-    { type: "string", field: "firstName", label: "First name" },
-    { type: "string", field: "secondName", label: "Second name" },
-    { type: "string", field: "thirdName", label: "Third name" },
-    { type: "string", field: "phone", label: "Phone" },
-    { type: "string", field: "address", label: "Address" },
+    { type: "string", field: "mark", label: "Mark" },
+    { type: "date", field: "date", label: "Date" },
+    { type: "string", field: "subject", label: "Subject" },
 ];
 
 export const ExamsDataGrid = () => {
     const { exams, status, isUpdateRequired } = useSelector(state => state.exams);
-    const dispatch                               = useDispatch();
+    const dispatch                            = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchStudents());
+        dispatch(fetchExams());
     }, [isUpdateRequired]);
 
-    const deleteStudent = (id) => {
-        dispatch(deleteOneStudent(id));
+    useEffect(() => {
+        console.log(exams);
+    }, [exams]);
+
+    const deleteExam = (id) => {
+        dispatch(deleteOneExam(id));
     };
 
     return (
         <>
             <DataGridTemplate
                 data={exams}
-                deleteRecord={deleteStudent}
+                deleteRecord={deleteExam}
                 formDialog={
-                    <StudentDialog
+                    <ExamDialog
                         initialState={
-                            { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
+                            { mark: "", date: "", subject: "" }
                         }
                     />
                 }
