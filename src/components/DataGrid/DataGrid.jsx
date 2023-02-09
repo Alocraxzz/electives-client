@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import { DeleteRecordDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordDialog";
 import { DeleteRecordsDialog } from "../Dialog/AlertDialog/DeleteAlertDialog/DeleteRecordsDialog";
 import { Alert, Snackbar } from "@mui/material";
+import classes from "./DataGrid.module.css";
 
 const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected, handleSetSnackBar }) => {
     const handleDeleteAll = () => {
@@ -20,10 +21,14 @@ const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected, 
         handleSetSnackBar("Successfully deleted");
     };
 
+    const clonedFormDialog = cloneElement(formDialog, {
+        openButtonSize: "medium"
+    });
+
     return (
         <>
-            <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+            <div className={classes.toolbarHeader}>
+                <div className={classes.toolbarControls}>
                     <GridToolbarContainer>
                         <GridToolbarQuickFilter/>
                     </GridToolbarContainer>
@@ -34,16 +39,11 @@ const CustomToolbar = ({ formDialog, deleteRecord, selectionModel, numSelected, 
                         <GridToolbarExport/>
                     </GridToolbarContainer>
                 </div>
-                <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "flex-end",
-                }}>
+                <div className={classes.toolbarInteractions}>
                     {(numSelected > 0) ? (
                         <DeleteRecordsDialog onClick={handleDeleteAll}/>
                     ) : (
-                        formDialog
+                        clonedFormDialog
                     )}
                 </div>
             </div>

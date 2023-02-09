@@ -1,0 +1,28 @@
+.toolbarHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.toolbarControls {
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbarInteractions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media screen and (max-width: 887px) {
+    .toolbarControls {
+        margin-bottom: 10px;
+    }
+    .toolbarHeader {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+

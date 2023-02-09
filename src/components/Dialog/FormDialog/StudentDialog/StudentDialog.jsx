@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeStudent, updateStudent } from "../../../../features/redux/rtk/studentSlice";
 
-export const StudentDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
+export const StudentDialog = ({ initialState, openButtonTitle, openButtonSize, title, startIcon, id }) => {
     const { students }          = useSelector(state => state.students);
     const [student, setStudent] = useState(initialState ?? { firstName: "" });
     const dispatch              = useDispatch();
@@ -31,6 +31,7 @@ export const StudentDialog = ({ initialState, openButtonTitle, title, startIcon,
     return (
         <FormDialog
             openButtonTitle={openButtonTitle ?? "Add record"}
+            openButtonSize={openButtonSize}
             title={title ?? "Add student"}
             startIcon={startIcon ?? <AddIcon/>}
             handleFormSubmit={handleFormSubmit}

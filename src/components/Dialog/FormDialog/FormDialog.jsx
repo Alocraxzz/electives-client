@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 export const FormDialog = ({
-    children, startIcon, openButtonTitle,
+    children, startIcon, openButtonTitle, openButtonSize,
     title, header, handleFormSubmit, clearForm,
 }) => {
     const [open, setOpen] = useState(false);
@@ -29,7 +29,7 @@ export const FormDialog = ({
 
     return (
         <div>
-            <Button variant="outlined" size="small" startIcon={startIcon} onClick={handleClickOpen}>
+            <Button variant="outlined" size={openButtonSize ?? "small"}startIcon={startIcon} onClick={handleClickOpen}>
                 {openButtonTitle ?? "Open dialog"}
             </Button>
             <Dialog
