@@ -68,6 +68,7 @@ export const DataGridTemplate = ({ data, deleteRecord, formDialog, headers }) =>
                     type: header.type,
                     flex: 1,
                     minWidth: 120,
+                    valueGetter: header.valueGetter,
                 }];
             });
         });

@@ -5,25 +5,35 @@ export default class ElectiveService {
         const electives = await axios.get(`http://localhost:5678/api/electives`)
             .catch((error) => console.log(`ElectivesService.getAll throw error: ${error}`));
 
+        electives?.data.forEach((elective) => {
+            elective.from = new Date(elective.from).toLocaleString();
+            elective.to = new Date(elective.to).toLocaleString();
+        });
+
         return electives?.data;
     }
 
     static async getOne (id) {
-        const student = await axios.get(`http://localhost:5678/api/electives/${id}`)
+        const elective = await axios.get(`http://localhost:5678/api/electives/${id}`)
             .catch((error) => console.log(`ElectivesService.getOne throw error: ${error}`));
 
-        return student?.data;
+        if (elective?.data) {
+            elective.from = new Date(elective.from).toLocaleString();
+            elective.to = new Date(elective.to).toLocaleString();
+        }
+
+        return elective?.data;
     }
 
-    static async store (student) {
-        const operation = await axios.post(`http://localhost:5678/api/electives`, student)
+    static async store (elective) {
+        const operation = await axios.post(`http://localhost:5678/api/electives`, elective)
             .catch((error) => console.log(`ElectivesService.store throw error: ${error}`));
 
         return operation?.data;
     }
 
-    static async update (id, student) {
-        const operation = await axios.put(`http://localhost:5678/api/electives/${id}`, student)
+    static async update (id, elective) {
+        const operation = await axios.put(`http://localhost:5678/api/electives/${id}`, elective)
             .catch((error) => console.log(`ElectivesService.update throw error: ${error}`));
 
         return operation?.data;

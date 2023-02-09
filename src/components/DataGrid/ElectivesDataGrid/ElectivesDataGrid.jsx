@@ -1,5 +1,5 @@
 import { DataGridTemplate } from "../DataGrid";
-import { ElectiveDialog } from "../../Dialog/ElectiveDialog/ElectiveDialog";
+import { ElectiveDialog } from "../../Dialog/FormDialog/ElectiveDialog/ElectiveDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOneElective, fetchElectives, Status } from "../../../features/redux/rtk/electiveSlice";
 import { useEffect } from "react";
@@ -7,11 +7,31 @@ import { LinearProgress } from "@mui/material";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
-    { type: "string", field: "firstName", label: "First name" },
-    { type: "string", field: "secondName", label: "Second name" },
-    { type: "string", field: "thirdName", label: "Third name" },
-    { type: "string", field: "phone", label: "Phone" },
-    { type: "string", field: "address", label: "Address" },
+    {
+        type: "string", field: "name", label: "Subject",
+        valueGetter: (params) => {
+            return params.row.subject.name;
+        },
+    },
+    {
+        type: "string", field: "from", label: "From",
+        valueGetter: (params) => {
+            return params.row.from;
+        },
+    },
+    {
+        type: "string", field: "to", label: "To",
+        valueGetter: (params) => {
+            return params.row.to;
+        },
+    },
+    { type: "string", field: "hours", label: "Hours" },
+    {
+        type: "string", field: "type", label: "Lesson type",
+        valueGetter: (params) => {
+            return params.row.lessonType.type;
+        },
+    },
 ];
 
 export const ElectivesDataGrid = () => {
@@ -22,9 +42,9 @@ export const ElectivesDataGrid = () => {
         dispatch(fetchElectives());
     }, [isUpdateRequired]);
 
-    useEffect(() => {
-        console.log(electives);
-    }, [electives]);
+    // useEffect(() => {
+    //     console.log(electives);
+    // }, [electives]);
 
     const deleteElective = (id) => {
         dispatch(deleteOneElective(id));
@@ -38,7 +58,7 @@ export const ElectivesDataGrid = () => {
                 formDialog={
                     <ElectiveDialog
                         initialState={
-                            { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
+                            { subject: "", from: "", to: "", hours: "", lessonType: "" }
                         }
                     />
                 }

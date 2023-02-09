@@ -4,83 +4,77 @@ import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { storeStudent, updateStudent } from "../../../../features/redux/rtk/studentSlice";
+import { storeElective, updateElective } from "../../../../features/redux/rtk/electiveSlice";
+import { SubjectSelect } from "../../../Select/SubjectSelect";
+import { LessonTypeSelect } from "../../../Select/LessonTypeSelect";
 
 export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
-    const { students }          = useSelector(state => state.students);
-    const [student, setStudent] = useState(initialState ?? { firstName: "" });
-    const dispatch              = useDispatch();
+    const { electives }           = useSelector(state => state.electives);
+    const [elective, setElective] = useState(initialState ?? { hours: "" });
+    const dispatch                = useDispatch();
 
     const clearForm = () => {
-        !id && setStudent(initialState);
+        !id && setElective(initialState);
     };
 
     useEffect(() => {
-        const student = students.find((elem) => elem._id === id);
+        const elective = electives.find((elem) => elem._id === id);
 
-        setStudent(student);
+        setElective(elective);
     }, [id]);
 
     const handleFormSubmit = () => {
-        id ? dispatch(updateStudent(id, student))
-            : dispatch(storeStudent(student));
+        id ? dispatch(updateElective(id, elective))
+            : dispatch(storeElective(elective));
 
-        !id && setStudent(initialState);
+        !id && setElective(initialState);
+    };
+
+    const transferSubject = (subject) => {
+        setElective({ ...elective, subject: subject });
+    };
+
+    const transferLessonType = (lessonType) => {
+        setElective({ ...elective, lessonType: lessonType });
     };
 
     return (
         <FormDialog
             openButtonTitle={openButtonTitle ?? "Add record"}
-            title={title ?? "Add student"}
+            title={title ?? "Add elective"}
             startIcon={startIcon ?? <AddIcon/>}
             handleFormSubmit={handleFormSubmit}
             clearForm={clearForm}
         >
+            <SubjectSelect initialValue={elective?.subject ?? ""} transferSubject={transferSubject}/>
             <TextField
-                value={student?.firstName ?? ""}
-                onChange={event => setStudent({ ...student, firstName: event.target.value })}
+                value={elective?.from ?? ""}
+                onChange={event => setElective({ ...elective, from: event.target.value })}
                 margin="dense"
-                label="First Name"
-                type="text"
+                label="From"
+                type="date"
                 variant="outlined"
                 fullWidth
             />
             <TextField
-                value={student?.secondName ?? ""}
-                onChange={event => setStudent({ ...student, secondName: event.target.value })}
+                value={elective?.to ?? ""}
+                onChange={event => setElective({ ...elective, to: event.target.value })}
                 margin="dense"
-                label="Second Name"
-                type="text"
+                label="To"
+                type="date"
                 variant="outlined"
                 fullWidth
             />
             <TextField
-                value={student?.thirdName ?? ""}
-                onChange={event => setStudent({ ...student, thirdName: event.target.value })}
+                value={elective?.hours ?? ""}
+                onChange={event => setElective({ ...elective, hours: event.target.value })}
                 margin="dense"
-                label="Third Name"
+                label="Hours"
                 type="text"
                 variant="outlined"
                 fullWidth
             />
-            <TextField
-                value={student?.phone ?? ""}
-                onChange={event => setStudent({ ...student, phone: event.target.value })}
-                margin="dense"
-                label="Phone"
-                type="text"
-                variant="outlined"
-                fullWidth
-            />
-            <TextField
-                value={student?.address ?? ""}
-                onChange={event => setStudent({ ...student, address: event.target.value })}
-                margin="dense"
-                label="Address"
-                type="text"
-                variant="outlined"
-                fullWidth
-            />
+            <LessonTypeSelect initialValue={elective?.lessonType ?? ""} transferLessonType={transferLessonType}/>
         </FormDialog>
     );
 };

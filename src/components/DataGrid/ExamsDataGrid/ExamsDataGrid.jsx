@@ -9,7 +9,12 @@ const headers = [
     { type: "string", field: "_id", label: "ID" },
     { type: "string", field: "mark", label: "Mark" },
     { type: "date", field: "date", label: "Date" },
-    { type: "string", field: "subject", label: "Subject" },
+    {
+        type: "string", field: "name", label: "Subject",
+        valueGetter: (params) => {
+            return params.row.subject.name;
+        },
+    },
 ];
 
 export const ExamsDataGrid = () => {
@@ -20,9 +25,9 @@ export const ExamsDataGrid = () => {
         dispatch(fetchExams());
     }, [isUpdateRequired]);
 
-    useEffect(() => {
-        console.log(exams);
-    }, [exams]);
+    // useEffect(() => {
+    //     console.log(exams);
+    // }, [exams]);
 
     const deleteExam = (id) => {
         dispatch(deleteOneExam(id));

@@ -5,25 +5,33 @@ export default class ExamService {
         const exams = await axios.get(`http://localhost:5678/api/exams`)
             .catch((error) => console.log(`ExamsService.getAll throw error: ${error}`));
 
+        exams?.data.forEach((exam) => {
+            exam.date = new Date(exam.date).toLocaleString();
+        });
+
         return exams?.data;
     }
 
     static async getOne (id) {
-        const student = await axios.get(`http://localhost:5678/api/exams/${id}`)
+        const exam = await axios.get(`http://localhost:5678/api/exams/${id}`)
             .catch((error) => console.log(`ExamsService.getOne throw error: ${error}`));
 
-        return student?.data;
+        if (exam?.data) {
+            exam.date = new Date(exam.date).toLocaleString();
+        }
+
+        return exam?.data;
     }
 
-    static async store (student) {
-        const operation = await axios.post(`http://localhost:5678/api/exams`, student)
+    static async store (exam) {
+        const operation = await axios.post(`http://localhost:5678/api/exams`, exam)
             .catch((error) => console.log(`ExamsService.store throw error: ${error}`));
 
         return operation?.data;
     }
 
-    static async update (id, student) {
-        const operation = await axios.put(`http://localhost:5678/api/exams/${id}`, student)
+    static async update (id, exam) {
+        const operation = await axios.put(`http://localhost:5678/api/exams/${id}`, exam)
             .catch((error) => console.log(`ExamsService.update throw error: ${error}`));
 
         return operation?.data;
