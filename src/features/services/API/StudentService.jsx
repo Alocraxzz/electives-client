@@ -5,12 +5,24 @@ export default class StudentService {
         const students = await axios.get(`http://localhost:5678/api/students`)
             .catch((error) => console.log(`StudentService.getAll throw error: ${error}`));
 
+        students?.data.forEach((student) => {
+            student.electives.forEach((elective) => {
+                elective.from = new Date(elective.from).toLocaleString();
+                elective.to = new Date(elective.to).toLocaleString();
+            });
+        })
+
         return students?.data;
     }
 
     static async getOne (id) {
         const student = await axios.get(`http://localhost:5678/api/students/${id}`)
             .catch((error) => console.log(`StudentService.getOne throw error: ${error}`));
+
+        student?.data.electives.forEach((elective) => {
+            elective.from = new Date(elective.from).toLocaleString();
+            elective.to = new Date(elective.to).toLocaleString();
+        });
 
         return student?.data;
     }

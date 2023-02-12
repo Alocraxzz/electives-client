@@ -12,6 +12,18 @@ const headers = [
     { type: "string", field: "thirdName", label: "Third name" },
     { type: "string", field: "phone", label: "Phone" },
     { type: "string", field: "address", label: "Address" },
+    // {
+    //     type: "string", field: "electives", label: "Electives",
+    //     valueGetter: (value) => {
+    //         let electives = "";
+    //
+    //         value.row.electives?.forEach(elective => {
+    //             return electives += `${elective.subject.name} `
+    //         });
+    //
+    //         return electives
+    //     },
+    // },
 ];
 
 export const StudentsDataGrid = () => {
@@ -32,11 +44,7 @@ export const StudentsDataGrid = () => {
                 data={students}
                 deleteRecord={handleDeleteOne}
                 formDialog={
-                    <StudentDialog
-                        initialState={
-                            { firstName: "", secondName: "", thirdName: "", phone: "", address: "" }
-                        }
-                    />
+                    <StudentDialog/>
                 }
                 headers={headers}
             />

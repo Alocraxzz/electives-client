@@ -5,20 +5,27 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeStudent, updateStudent } from "../../../../features/redux/rtk/studentSlice";
+import ElectivesSelect from "../../../Select/ElectivesSelect";
 
-export const StudentDialog = ({ initialState, openButtonTitle, openButtonSize, title, startIcon, id }) => {
+export const StudentDialog = ({ openButtonTitle, openButtonSize, title, startIcon, id }) => {
+    const initialState = { firstName: "", secondName: "", thirdName: "", phone: "", address: "", electives: [] };
+
     const { students }          = useSelector(state => state.students);
-    const [student, setStudent] = useState(initialState ?? { firstName: "" });
+    const [student, setStudent] = useState(initialState);
     const dispatch              = useDispatch();
+
+    const reset = () => {
+        const student = students.find((elem) => elem._id === id);
+        setStudent(student);
+    }
 
     const clearForm = () => {
         !id && setStudent(initialState);
+        reset();
     };
 
     useEffect(() => {
-        const student = students.find((elem) => elem._id === id);
-
-        setStudent(student);
+        reset();
     }, [id]);
 
     const handleFormSubmit = () => {
@@ -26,6 +33,10 @@ export const StudentDialog = ({ initialState, openButtonTitle, openButtonSize, t
             : dispatch(storeStudent(student));
 
         !id && setStudent(initialState);
+    };
+
+    const transferElectives = (electives) => {
+        setStudent({ ...student, electives: electives });
     };
 
     return (
@@ -82,6 +93,7 @@ export const StudentDialog = ({ initialState, openButtonTitle, openButtonSize, t
                 variant="outlined"
                 fullWidth
             />
+            <ElectivesSelect initialValues={student?.electives} transferElectives={transferElectives} />
         </FormDialog>
     );
 };

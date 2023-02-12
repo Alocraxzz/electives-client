@@ -5,11 +5,12 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeElective, updateElective } from "../../../../features/redux/rtk/electiveSlice";
-import { SubjectSelect } from "../../../Select/SubjectSelect";
 import { LessonTypeSelect } from "../../../Select/LessonTypeSelect";
+import { Autocomplete } from "@mui/material";
 
 export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
     const { electives }           = useSelector(state => state.electives);
+    // const { subjects }            = useSelector(state => state.subjects);
     const [elective, setElective] = useState(initialState ?? { hours: "" });
     const dispatch                = useDispatch();
 
@@ -46,7 +47,14 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
             handleFormSubmit={handleFormSubmit}
             clearForm={clearForm}
         >
-            <SubjectSelect initialValue={elective?.subject ?? ""} transferSubject={transferSubject}/>
+            {/*<SubjectSelect initialValue={elective?.subject ?? ""} transferSubject={transferSubject}/>*/}
+            {/*<Autocomplete*/}
+            {/*    disablePortal*/}
+            {/*    id="combo-box-demo"*/}
+            {/*    options={subjects}*/}
+            {/*    sx={{ width: 300 }}*/}
+            {/*    renderInput={(params) => <TextField value={params?.name} label="Movie"/>}*/}
+            {/*/>*/}
             <TextField
                 value={elective?.from ?? ""}
                 onChange={event => setElective({ ...elective, from: event.target.value })}

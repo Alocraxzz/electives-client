@@ -50,7 +50,7 @@ export const ExamDialog = ({ initialState, openButtonTitle, title, startIcon, id
                 onChange={event => setExam({ ...exam, date: event.target.value })}
                 margin="dense"
                 label="Date"
-                type="date"
+                type="datetime-local"
                 variant="outlined"
                 fullWidth
             />
