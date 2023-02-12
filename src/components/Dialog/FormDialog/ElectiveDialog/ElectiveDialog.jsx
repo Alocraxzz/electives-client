@@ -7,16 +7,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeElective, updateElective } from "../../../../features/redux/rtk/electiveSlice";
 import { LessonTypeSelect } from "../../../Select/LessonTypeSelect";
 import { Autocomplete } from "@mui/material";
+import { fetchSubjects } from "../../../../features/redux/rtk/subjectSlice";
 
 export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
     const { electives }           = useSelector(state => state.electives);
-    // const { subjects }            = useSelector(state => state.subjects);
+    const { subjects }            = useSelector(state => state.subjects);
     const [elective, setElective] = useState(initialState ?? { hours: "" });
     const dispatch                = useDispatch();
 
-    const clearForm = () => {
-        !id && setElective(initialState);
-    };
+    useEffect(() => {
+        console.log(elective);
+    }, [elective]);
+
+    useEffect(() => {
+        dispatch(fetchSubjects());
+    }, []);
 
     useEffect(() => {
         const elective = electives.find((elem) => elem._id === id);
@@ -39,6 +44,10 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
         setElective({ ...elective, lessonType: lessonType });
     };
 
+    const clearForm = () => {
+        !id && setElective(initialState);
+    };
+
     return (
         <FormDialog
             openButtonTitle={openButtonTitle ?? "Add record"}
@@ -47,14 +56,20 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
             handleFormSubmit={handleFormSubmit}
             clearForm={clearForm}
         >
-            {/*<SubjectSelect initialValue={elective?.subject ?? ""} transferSubject={transferSubject}/>*/}
-            {/*<Autocomplete*/}
-            {/*    disablePortal*/}
-            {/*    id="combo-box-demo"*/}
-            {/*    options={subjects}*/}
-            {/*    sx={{ width: 300 }}*/}
-            {/*    renderInput={(params) => <TextField value={params?.name} label="Movie"/>}*/}
-            {/*/>*/}
+            <Autocomplete
+                disablePortal
+                id="size-small-outlined"
+                options={subjects}
+                defaultValue={elective?.subject}
+                getOptionLabel={(option) => option.name}
+                onChange={(event, value) => setElective({ ...elective, subject: value._id })}
+                sx={{ mt: "10px" }}
+                renderInput={(params) => {
+                    return (
+                        <TextField {...params} label="Some label" variant="outlined" fullWidth/>
+                    );
+                }}
+            />
             <TextField
                 value={elective?.from ?? ""}
                 onChange={event => setElective({ ...elective, from: event.target.value })}
