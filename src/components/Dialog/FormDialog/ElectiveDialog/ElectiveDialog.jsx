@@ -5,13 +5,13 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeElective, updateElective } from "../../../../features/redux/rtk/electiveSlice";
-import { LessonTypeSelect } from "../../../Select/LessonTypeSelect";
 import { Autocomplete } from "@mui/material";
 import { fetchSubjects } from "../../../../features/redux/rtk/subjectSlice";
 
 export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
     const { electives }           = useSelector(state => state.electives);
     const { subjects }            = useSelector(state => state.subjects);
+    const { lessonsTypes }        = useSelector(state => state.lessonsTypes);
     const [elective, setElective] = useState(initialState ?? { hours: "" });
     const dispatch                = useDispatch();
 
@@ -97,7 +97,20 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
                 variant="outlined"
                 fullWidth
             />
-            <LessonTypeSelect initialValue={elective?.lessonType ?? ""} transferLessonType={transferLessonType}/>
+            <Autocomplete
+                disablePortal
+                id="size-small-outlined"
+                options={lessonsTypes}
+                defaultValue={elective?.lessonType}
+                getOptionLabel={(option) => option.type}
+                onChange={(event, value) => setElective({ ...elective, lessonType: value._id })}
+                sx={{ mt: "10px" }}
+                renderInput={(params) => {
+                    return (
+                        <TextField {...params} label="Some label" variant="outlined" fullWidth/>
+                    );
+                }}
+            />
         </FormDialog>
     );
 };
