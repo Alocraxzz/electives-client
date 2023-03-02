@@ -7,6 +7,16 @@ import { ExamDialog } from "../../Dialog/FormDialog/ExamDialog/ExamsDialog";
 
 const headers = [
     { type: "string", field: "_id", label: "ID" },
+    {
+        type: "string", field: "student", label: "Student",
+        valueGetter: (params) => {
+            return params.row.student && (
+                params.row.student?.firstName + ' ' +
+                params.row.student?.secondName + ' ' +
+                params.row.student?.thirdName
+            );
+        },
+    },
     { type: "string", field: "mark", label: "Mark" },
     { type: "date", field: "date", label: "Date" },
     {
@@ -25,10 +35,6 @@ export const ExamsDataGrid = () => {
         dispatch(fetchExams());
     }, [isUpdateRequired]);
 
-    // useEffect(() => {
-    //     console.log(exams);
-    // }, [exams]);
-
     const deleteExam = (id) => {
         dispatch(deleteOneExam(id));
     };
@@ -39,11 +45,7 @@ export const ExamsDataGrid = () => {
                 data={exams}
                 deleteRecord={deleteExam}
                 formDialog={
-                    <ExamDialog
-                        initialState={
-                            { mark: "", date: "", subject: "" }
-                        }
-                    />
+                    <ExamDialog/>
                 }
                 headers={headers}
             />

@@ -5,27 +5,42 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { storeExam, updateExam } from "../../../../features/redux/rtk/examSlice";
+import { Autocomplete } from "@mui/material";
+import { fetchSubjects } from "../../../../features/redux/rtk/subjectSlice";
+import { fetchStudents } from "../../../../features/redux/rtk/studentSlice";
 
-export const ExamDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
-    const { exams }          = useSelector(state => state.exams);
-    const [exam, setExam] = useState(initialState ?? { mark: "" });
-    const dispatch              = useDispatch();
+export const ExamDialog = ({ openButtonTitle, title, startIcon, id }) =>
+ {
+    const initialState = { student: {}, mark: "", date: "", subject: "" };
 
-    const clearForm = () => {
-        !id && setExam(initialState);
-    };
+    const { exams }       = useSelector(state => state.exams);
+    const { subjects }    = useSelector(state => state.subjects);
+    const { students }    = useSelector(state => state.students);
+    const [exam, setExam] = useState(initialState);
+    const dispatch        = useDispatch();
 
-    useEffect(() => {
+    const reset = () => {
         const exam = exams.find((elem) => elem._id === id);
 
         setExam(exam);
+    }
+
+    useEffect(() => {
+        dispatch(fetchSubjects());
+        dispatch(fetchStudents());
+    }, []);
+
+    useEffect(() => {
+        reset();
     }, [id]);
 
     const handleFormSubmit = () => {
         id ? dispatch(updateExam(id, exam))
             : dispatch(storeExam(exam));
+    };
 
-        !id && setExam(initialState);
+    const clearForm = () => {
+        reset();
     };
 
     return (
@@ -36,14 +51,33 @@ export const ExamDialog = ({ initialState, openButtonTitle, title, startIcon, id
             handleFormSubmit={handleFormSubmit}
             clearForm={clearForm}
         >
-            <TextField
-                value={exam?.subject ?? ""}
-                onChange={event => setExam({ ...exam, subject: event.target.value })}
-                margin="dense"
-                label="Subject"
-                type="text"
-                variant="outlined"
-                fullWidth
+            <Autocomplete
+                disablePortal
+                id="size-small-outlined"
+                options={students}
+                defaultValue={exam?.student}
+                getOptionLabel={(option) => option?.firstName + ' ' + option?.secondName + ' ' + option?.thirdName }
+                onChange={(event, value) => setExam({ ...exam, student: value?._id })}
+                sx={{ mt: "10px" }}
+                renderInput={(params) => {
+                    return (
+                        <TextField {...params} label="Students" variant="outlined" fullWidth/>
+                    );
+                }}
+            />
+            <Autocomplete
+                disablePortal
+                id="size-small-outlined"
+                options={subjects}
+                defaultValue={exam?.subject}
+                getOptionLabel={(option) => option.name}
+                onChange={(event, value) => setExam({ ...exam, subject: value._id })}
+                sx={{ mt: "10px" }}
+                renderInput={(params) => {
+                    return (
+                        <TextField {...params} label="Subjects" variant="outlined" fullWidth/>
+                    );
+                }}
             />
             <TextField
                 value={exam?.date ?? ""}
@@ -59,9 +93,10 @@ export const ExamDialog = ({ initialState, openButtonTitle, title, startIcon, id
                 onChange={event => setExam({ ...exam, mark: event.target.value })}
                 margin="dense"
                 label="Mark"
-                type="text"
+                type="number"
                 variant="outlined"
                 fullWidth
+                InputProps={{ inputProps: { min: 1, max: 5 } }}
             />
         </FormDialog>
     );

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeElective, updateElective } from "../../../../features/redux/rtk/electiveSlice";
 import { Autocomplete } from "@mui/material";
 import { fetchSubjects } from "../../../../features/redux/rtk/subjectSlice";
+import { fetchLessonsTypes } from "../../../../features/redux/rtk/lessonTypeSlice";
 
 export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon, id }) => {
     const { electives }           = useSelector(state => state.electives);
@@ -21,6 +22,7 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
 
     useEffect(() => {
         dispatch(fetchSubjects());
+        dispatch(fetchLessonsTypes());
     }, []);
 
     useEffect(() => {
@@ -66,7 +68,7 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
                 sx={{ mt: "10px" }}
                 renderInput={(params) => {
                     return (
-                        <TextField {...params} label="Some label" variant="outlined" fullWidth/>
+                        <TextField {...params} label="Subjects" variant="outlined" fullWidth/>
                     );
                 }}
             />
@@ -107,7 +109,7 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
                 sx={{ mt: "10px" }}
                 renderInput={(params) => {
                     return (
-                        <TextField {...params} label="Some label" variant="outlined" fullWidth/>
+                        <TextField {...params} label="Lesson type" variant="outlined" fullWidth/>
                     );
                 }}
             />

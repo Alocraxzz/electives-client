@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export default class ElectiveService {
     static async getAll () {
         const electives = await axios.get(`http://localhost:5678/api/electives`)

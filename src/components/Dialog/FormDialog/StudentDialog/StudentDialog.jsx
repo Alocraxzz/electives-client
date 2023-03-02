@@ -3,24 +3,34 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { useDispatch, useSelector } from "react-redux";
 import { storeStudent, updateStudent } from "../../../../features/redux/rtk/studentSlice";
+import { Autocomplete } from "@mui/material";
+import { fetchElectives } from "../../../../features/redux/rtk/electiveSlice";
 import ElectivesSelect from "../../../Select/ElectivesSelect";
 
+const icon        = <CheckBoxOutlineBlankIcon fontSize="small"/>;
+const checkedIcon = <CheckBoxIcon fontSize="small"/>;
 export const StudentDialog = ({ openButtonTitle, openButtonSize, title, startIcon, id }) => {
     const initialState = { firstName: "", secondName: "", thirdName: "", phone: "", address: "", electives: [] };
 
+    const { electives }         = useSelector(state => state.electives);
     const { students }          = useSelector(state => state.students);
     const [student, setStudent] = useState(initialState);
     const dispatch              = useDispatch();
 
+    useEffect(() => {
+        dispatch(fetchElectives());
+    }, []);
+
     const reset = () => {
         const student = students.find((elem) => elem._id === id);
         setStudent(student);
-    }
+    };
 
     const clearForm = () => {
-        !id && setStudent(initialState);
         reset();
     };
 
@@ -31,8 +41,6 @@ export const StudentDialog = ({ openButtonTitle, openButtonSize, title, startIco
     const handleFormSubmit = () => {
         id ? dispatch(updateStudent(id, student))
             : dispatch(storeStudent(student));
-
-        !id && setStudent(initialState);
     };
 
     const transferElectives = (electives) => {
