@@ -10,7 +10,7 @@ export default class StudentService {
                 elective.from = new Date(elective.from).toLocaleString();
                 elective.to = new Date(elective.to).toLocaleString();
             });
-        })
+        });
 
         return students?.data;
     }
