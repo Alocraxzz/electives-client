@@ -29,7 +29,7 @@ const headers = [
 
 export const ExamsDataGrid = () => {
     const { exams, status, isUpdateRequired } = useSelector(state => state.exams);
-    const dispatch                            = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchExams());
@@ -41,17 +41,23 @@ export const ExamsDataGrid = () => {
 
     return (
         <>
-            <DataGridTemplate
-                data={exams}
-                deleteRecord={deleteExam}
-                formDialog={
-                    <ExamDialog/>
-                }
-                headers={headers}
-            />
-            {status === Status.pending &&
-                <LinearProgress color="inherit"/>
-            }
+            {exams && exams.length > 0 ? (
+                <>
+                    <DataGridTemplate
+                        data={exams ?? []}
+                        deleteRecord={deleteExam}
+                        formDialog={
+                            <ExamDialog />
+                        }
+                        headers={headers}
+                    />
+                    {status === Status.pending &&
+                        <LinearProgress color="inherit" />
+                    }
+                </>
+            ) : (
+                <h3>There are no exams</h3>
+            )}
         </>
     );
 };

@@ -17,10 +17,6 @@ export const ElectiveDialog = ({ initialState, openButtonTitle, title, startIcon
     const dispatch                = useDispatch();
 
     useEffect(() => {
-        console.log(elective);
-    }, [elective]);
-
-    useEffect(() => {
         dispatch(fetchSubjects());
         dispatch(fetchLessonsTypes());
     }, []);

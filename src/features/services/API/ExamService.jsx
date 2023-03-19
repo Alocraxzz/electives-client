@@ -3,7 +3,7 @@ import axios from "axios";
 export default class ExamService {
     static async getAll () {
         const exams = await axios.get(`http://localhost:5678/api/exams`)
-            .catch((error) => console.log(`ExamsService.getAll throw error: ${error}`));
+            .catch((error) => alert(`ExamsService.getAll throw error: \n${error}`));
 
         exams?.data.forEach((exam) => {
             exam.date = new Date(exam.date).toLocaleString();
@@ -14,7 +14,7 @@ export default class ExamService {
 
     static async getOne (id) {
         const exam = await axios.get(`http://localhost:5678/api/exams/${id}`)
-            .catch((error) => console.log(`ExamsService.getOne throw error: ${error}`));
+            .catch((error) => alert(`ExamsService.getOne throw error: \n${error}`));
 
         if (exam?.data) {
             exam.date = new Date(exam.date).toLocaleString();
@@ -25,21 +25,21 @@ export default class ExamService {
 
     static async store (exam) {
         const operation = await axios.post(`http://localhost:5678/api/exams`, exam)
-            .catch((error) => console.log(`ExamsService.store throw error: ${error}`));
+            .catch((error) => alert(`ExamsService.store throw error: \n${error}`));
 
         return operation?.data;
     }
 
     static async update (id, exam) {
         const operation = await axios.put(`http://localhost:5678/api/exams/${id}`, exam)
-            .catch((error) => console.log(`ExamsService.update throw error: ${error}`));
+            .catch((error) => alert(`ExamsService.update throw error: \n${error}`));
 
         return operation?.data;
     }
 
     static async deleteOne (id) {
         const operation = await axios.delete(`http://localhost:5678/api/exams/${id}`)
-            .catch((error) => console.log(`ExamsService.deleteOne throw error: ${error}`));
+            .catch((error) => alert(`ExamsService.deleteOne throw error: \n${error}`));
 
         return operation?.data;
     }

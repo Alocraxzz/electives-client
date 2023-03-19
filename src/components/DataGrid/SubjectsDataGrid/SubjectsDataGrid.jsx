@@ -15,15 +15,11 @@ const headers = [
 
 export const SubjectsDataGrid = () => {
     const { subjects, status, isUpdateRequired } = useSelector(state => state.subjects);
-    const dispatch                               = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchSubjects());
     }, [isUpdateRequired]);
-
-    useEffect(() => {
-        console.log(subjects);
-    }, [subjects]);
 
     const deleteSubject = (id) => {
         dispatch(deleteOneSubject(id));
@@ -31,21 +27,27 @@ export const SubjectsDataGrid = () => {
 
     return (
         <>
-            <DataGridTemplate
-                data={subjects}
-                deleteRecord={deleteSubject}
-                formDialog={
-                    <SubjectDialog
-                        initialState={
-                            { name: "", load: "", from: "", to: "" }
+            {subjects && subjects.length > 0 ? (
+                <>
+                    <DataGridTemplate
+                        data={subjects ?? []}
+                        deleteRecord={deleteSubject}
+                        formDialog={
+                            <SubjectDialog
+                                initialState={
+                                    { name: "", load: "", from: "", to: "" }
+                                }
+                            />
                         }
+                        headers={headers}
                     />
-                }
-                headers={headers}
-            />
-            {status === Status.pending &&
-                <LinearProgress color="inherit"/>
-            }
+                    {status === Status.pending &&
+                        <LinearProgress color="inherit" />
+                    }
+                </>
+            ) : (
+                <h3>There are no subjects</h3>
+            )}
         </>
     );
 };

@@ -36,15 +36,11 @@ const headers = [
 
 export const ElectivesDataGrid = () => {
     const { electives, status, isUpdateRequired } = useSelector(state => state.electives);
-    const dispatch                                = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchElectives());
     }, [isUpdateRequired]);
-
-    // useEffect(() => {
-    //     console.log(electives);
-    // }, [electives]);
 
     const deleteElective = (id) => {
         dispatch(deleteOneElective(id));
@@ -52,21 +48,27 @@ export const ElectivesDataGrid = () => {
 
     return (
         <>
-            <DataGridTemplate
-                data={electives}
-                deleteRecord={deleteElective}
-                formDialog={
-                    <ElectiveDialog
-                        initialState={
-                            { subject: "", from: "", to: "", hours: "", lessonType: "" }
+            {electives && electives.length > 0 ? (
+                <>
+                    <DataGridTemplate
+                        data={electives}
+                        deleteRecord={deleteElective}
+                        formDialog={
+                            <ElectiveDialog
+                                initialState={
+                                    { subject: "", from: "", to: "", hours: "", lessonType: "" }
+                                }
+                            />
                         }
+                        headers={headers}
                     />
-                }
-                headers={headers}
-            />
-            {status === Status.pending &&
-                <LinearProgress color="inherit"/>
-            }
+                    {status === Status.pending &&
+                        <LinearProgress color="inherit" />
+                    }
+                </>
+            ) : (
+                <h3>There are no electives</h3>
+            )}
         </>
     );
 };

@@ -19,7 +19,7 @@ export const SubjectDialog = ({ initialState, openButtonTitle, title, startIcon,
         const subject = subjects.find((elem) => elem._id === id);
 
         setSubject(subject);
-    }, [id]);
+    }, [id, subjects]);
 
     const handleFormSubmit = () => {
         id ? dispatch(updateSubject(id, subject))

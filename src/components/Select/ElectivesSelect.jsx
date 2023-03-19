@@ -28,7 +28,7 @@ export default function ElectivesSelect ({ initialValues, transferElectives }) {
 
     useEffect(() => {
         dispatch(fetchElectives());
-    }, [isUpdateRequired]);
+    }, [isUpdateRequired, dispatch]);
 
     useEffect(() => {
         if (initialValues) {
@@ -40,11 +40,11 @@ export default function ElectivesSelect ({ initialValues, transferElectives }) {
                 setSelected(initialValues);
             }
         }
-    }, []);
+    }, [initialValues]);
 
     useEffect(() => {
         selected && transferElectives(selected);
-    }, [selected]);
+    }, [selected, transferElectives]);
 
     const handleChange = (event) => {
         setSelected(event.target.value);

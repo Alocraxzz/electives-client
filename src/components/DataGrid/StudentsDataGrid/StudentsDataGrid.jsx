@@ -28,7 +28,7 @@ const headers = [
 
 export const StudentsDataGrid = () => {
     const { students, status, isUpdateRequired } = useSelector(state => state.students);
-    const dispatch                               = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchStudents());
@@ -40,17 +40,23 @@ export const StudentsDataGrid = () => {
 
     return (
         <>
-            <DataGridTemplate
-                data={students}
-                deleteRecord={handleDeleteOne}
-                formDialog={
-                    <StudentDialog/>
+            {students && students.length > 0 ? (
+                <>
+                <DataGridTemplate
+                    data={students}
+                    deleteRecord={handleDeleteOne}
+                    formDialog={
+                        <StudentDialog />
+                    }
+                    headers={headers}
+                />
+                {status === Status.pending &&
+                    <LinearProgress color="inherit" />
                 }
-                headers={headers}
-            />
-            {status === Status.pending &&
-                <LinearProgress color="inherit"/>
-            }
+            </>
+            ) : (
+                <h3>There are no students</h3>
+            )}
         </>
     );
 };
