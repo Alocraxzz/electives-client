@@ -12,18 +12,6 @@ const headers = [
     { type: "string", field: "thirdName", label: "Third name" },
     { type: "string", field: "phone", label: "Phone" },
     { type: "string", field: "address", label: "Address" },
-    // {
-    //     type: "string", field: "electives", label: "Electives",
-    //     valueGetter: (value) => {
-    //         let electives = "";
-    //
-    //         value.row.electives?.forEach(elective => {
-    //             return electives += `${elective.subject.name} `
-    //         });
-    //
-    //         return electives
-    //     },
-    // },
 ];
 
 export const StudentsDataGrid = () => {
@@ -42,18 +30,18 @@ export const StudentsDataGrid = () => {
         <>
             {students && students.length > 0 ? (
                 <>
-                <DataGridTemplate
-                    data={students}
-                    deleteRecord={handleDeleteOne}
-                    formDialog={
-                        <StudentDialog />
+                    <DataGridTemplate
+                        data={students}
+                        deleteRecord={handleDeleteOne}
+                        formDialog={
+                            <StudentDialog />
+                        }
+                        headers={headers}
+                    />
+                    {status === Status.pending &&
+                        <LinearProgress color="inherit" />
                     }
-                    headers={headers}
-                />
-                {status === Status.pending &&
-                    <LinearProgress color="inherit" />
-                }
-            </>
+                </>
             ) : (
                 <h3>There are no students</h3>
             )}
